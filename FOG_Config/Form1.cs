@@ -65,12 +65,45 @@ namespace FOG_Config
 
             if (Btn_OpenSerial.Text == "再次打开串口...")
             {
+                byte[] Sendbuff = new byte[4];
                 Btn_OpenSerial.Text = "关闭串口...";
+                serialPort.Open();
+
+                Sendbuff[0] = 0xDE;
+
+
+                serialPort.Write(Sendbuff, 0, 1);
+
+                InfoBox.Text += "进入调试模式，数据发送停止！";
+
+                InfoBox.Text += "\r\n";
+                //让文本框获取焦点 
+                this.InfoBox.Focus();
+                //设置光标的位置到文本尾 
+                this.InfoBox.Select(this.InfoBox.Text.Length, 0);
+                //滚动到控件光标处 
+                this.InfoBox.ScrollToCaret();
             }
             else if (Btn_OpenSerial.Text == "打开串口...")
             {
+                byte[] Sendbuff = new byte[4];
                 Btn_OpenSerial.Text = "关闭串口...";
                 serialPort.Open();
+                
+                Sendbuff[0] = 0xDE;
+
+
+                serialPort.Write(Sendbuff, 0, 1);
+
+                InfoBox.Text += "进入调试模式，数据发送停止！";
+
+                InfoBox.Text += "\r\n";
+                //让文本框获取焦点 
+                this.InfoBox.Focus();
+                //设置光标的位置到文本尾 
+                this.InfoBox.Select(this.InfoBox.Text.Length, 0);
+                //滚动到控件光标处 
+                this.InfoBox.ScrollToCaret();
             }
             else
             {
@@ -235,7 +268,20 @@ namespace FOG_Config
             byte[] buf = new byte[n];
             serialPort.Read(readBuffer, 0, n);
             serialData.ReceiveData.AddRange(readBuffer);
-            this.Invoke(DelgeateShow);
+            if (serialData.ReceiveData.Count >= 4)
+            {
+              if (serialData.ReceiveData[0] == 0x55)
+              {
+                    this.Invoke(DelgeateShow);
+                    serialData.ReceiveData.RemoveRange(0, 4);
+              }
+              else
+              {
+                    serialData.ReceiveData.Clear();
+              }
+               
+            }
+           
 
          }
 
@@ -321,6 +367,25 @@ namespace FOG_Config
             {
                 InfoBox.Text += "0x" + Sendbuff[i].ToString("X2") + " ";
             }
+            InfoBox.Text += "\r\n";
+            //让文本框获取焦点 
+            this.InfoBox.Focus();
+            //设置光标的位置到文本尾 
+            this.InfoBox.Select(this.InfoBox.Text.Length, 0);
+            //滚动到控件光标处 
+            this.InfoBox.ScrollToCaret();
+        }
+
+        private void Btn_Debug_Click(object sender, EventArgs e)
+        {
+            byte[] Sendbuff = new byte[4];
+            Sendbuff[0] = 0xDE;
+            
+
+            serialPort.Write(Sendbuff, 0,1);
+
+            InfoBox.Text += "进入调试模式，数据发送停止！";
+                     
             InfoBox.Text += "\r\n";
             //让文本框获取焦点 
             this.InfoBox.Focus();
