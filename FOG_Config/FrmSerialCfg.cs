@@ -20,7 +20,7 @@ namespace FOG_Config
             cmbox_BaudRate.SelectedIndex = 8;
             cmbox__DataBit.SelectedIndex = 1;
             cmbox_StopBit.SelectedIndex = 1;
-            cmbox_ParityBit.SelectedIndex = 1;
+            cmbox_ParityBit.SelectedIndex = 2;
 
         }
 
@@ -28,7 +28,9 @@ namespace FOG_Config
 
         private void setComBox()
         {
-            string[] ArryPort = SerialPort.GetPortNames();//搜索
+            string[]  ArryPort = SerialPort.GetPortNames(); ;
+              
+                
             cmbox_SerialNum.Items.Clear();
             for (int i = 0; i < ArryPort.Length; i++)
             {
@@ -48,7 +50,16 @@ namespace FOG_Config
 
         private void Btn_OK_Click(object sender, EventArgs e)
         {
-            serialParameter.comName = cmbox_SerialNum.SelectedItem.ToString();
+            
+            try
+            {
+                serialParameter.comName = cmbox_SerialNum.SelectedItem.ToString();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show("没有连接串口！");
+                return;
+            }
             serialParameter.baudRate = cmbox_BaudRate.SelectedItem.ToString();
             serialParameter.dataBit = cmbox__DataBit.SelectedItem.ToString();
             serialParameter.stopBit = cmbox_StopBit.SelectedItem.ToString();
