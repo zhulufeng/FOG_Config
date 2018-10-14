@@ -23,8 +23,20 @@ namespace FOG_Config
         public static List<byte> buffer = new List<byte>(4096);
         public static UInt16 index = 0;
         public static List<byte> ReceiveData =  new List<byte>();
-        public static bool DebudFlag = false;
-
+        public static bool DebugFlag = false;
+        public static bool DebugSendFlag = false;
+        public static bool DebugSendFreqFlag = false;
+        public static bool DebugSend2piFlag = false;
+        public static bool DebugSendLoopGainFlag = false;
+        public static bool DebugSendUartCFGFlag = false;
+        public static bool DebugSendModuleFlag = false;
+        public static bool DebugModuleFlag = false;
+        public static bool DebugUartCFGFlag = false;
+        public static bool DebugFreqFlag = false;
+        public static bool Debug2piFlag = false;
+        public static bool DebugLoopGainFlag = false;
+        public static bool DebugResetFlag = false;
+        public static bool NextStepEnable = false;
     }
    class CustomData
     {
@@ -35,7 +47,7 @@ namespace FOG_Config
         public static int clkFreq = 0;
         public static int Volt2pi = 0;
         public static int LoopGain = 0;
-
+        public static int Moduledata = 0;
         public static string[] strGyroID = {"F50","F60","F70H","F70L","F98","F120"};
 
     }

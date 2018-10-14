@@ -30,8 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.serialPort = new System.IO.Ports.SerialPort(this.components);
-            this.Btn_SendUp = new System.Windows.Forms.Button();
-            this.Btn_SendDown = new System.Windows.Forms.Button();
             this.TBox_NowFreq = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -42,7 +40,6 @@
             this.Btn_OpenSerial = new System.Windows.Forms.Button();
             this.InfoBox = new System.Windows.Forms.TextBox();
             this.Btn_SendData = new System.Windows.Forms.Button();
-            this.Btn_CustomFreq = new System.Windows.Forms.Button();
             this.TBox_2pi = new System.Windows.Forms.TextBox();
             this.Btn_SendPi = new System.Windows.Forms.Button();
             this.Btn_LoopGain = new System.Windows.Forms.Button();
@@ -55,43 +52,38 @@
             this.Btn_ConfigUart = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.Btn_Reset = new System.Windows.Forms.Button();
+            this.Debug_Timer = new System.Windows.Forms.Timer(this.components);
+            this.Volt_Timer = new System.Windows.Forms.Timer(this.components);
+            this.Loop_Timer = new System.Windows.Forms.Timer(this.components);
+            this.UartCFG_Timer = new System.Windows.Forms.Timer(this.components);
+            this.numericUpDown_FreqInex = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
+            this.Btn_ClearBox = new System.Windows.Forms.Button();
+            this.numericUpDown_Module = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
+            this.Btn_ModuleData = new System.Windows.Forms.Button();
+            this.Module_Timer = new System.Windows.Forms.Timer(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_FreqInex)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Module)).BeginInit();
             this.SuspendLayout();
             // 
             // serialPort
             // 
             this.serialPort.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort_DataReceived);
             // 
-            // Btn_SendUp
-            // 
-            this.Btn_SendUp.Location = new System.Drawing.Point(28, 245);
-            this.Btn_SendUp.Name = "Btn_SendUp";
-            this.Btn_SendUp.Size = new System.Drawing.Size(213, 44);
-            this.Btn_SendUp.TabIndex = 0;
-            this.Btn_SendUp.Text = "上一个频率点(&U)";
-            this.Btn_SendUp.UseVisualStyleBackColor = true;
-            this.Btn_SendUp.Click += new System.EventHandler(this.Btn_SendUp_Click);
-            // 
-            // Btn_SendDown
-            // 
-            this.Btn_SendDown.Location = new System.Drawing.Point(28, 345);
-            this.Btn_SendDown.Name = "Btn_SendDown";
-            this.Btn_SendDown.Size = new System.Drawing.Size(213, 44);
-            this.Btn_SendDown.TabIndex = 1;
-            this.Btn_SendDown.Text = "下一个频率点(&D)";
-            this.Btn_SendDown.UseVisualStyleBackColor = true;
-            this.Btn_SendDown.Click += new System.EventHandler(this.Btn_SendDown_Click);
-            // 
             // TBox_NowFreq
             // 
-            this.TBox_NowFreq.Location = new System.Drawing.Point(352, 305);
+            this.TBox_NowFreq.Location = new System.Drawing.Point(356, 307);
             this.TBox_NowFreq.Name = "TBox_NowFreq";
-            this.TBox_NowFreq.Size = new System.Drawing.Size(265, 35);
+            this.TBox_NowFreq.ReadOnly = true;
+            this.TBox_NowFreq.Size = new System.Drawing.Size(205, 35);
             this.TBox_NowFreq.TabIndex = 2;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(627, 316);
+            this.label1.Location = new System.Drawing.Point(571, 318);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(130, 24);
             this.label1.TabIndex = 3;
@@ -100,7 +92,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(640, 255);
+            this.label2.Location = new System.Drawing.Point(567, 246);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(154, 24);
             this.label2.TabIndex = 5;
@@ -108,15 +100,16 @@
             // 
             // TBox_UpFreq
             // 
-            this.TBox_UpFreq.Location = new System.Drawing.Point(352, 244);
+            this.TBox_UpFreq.Location = new System.Drawing.Point(356, 246);
             this.TBox_UpFreq.Name = "TBox_UpFreq";
-            this.TBox_UpFreq.Size = new System.Drawing.Size(265, 35);
+            this.TBox_UpFreq.ReadOnly = true;
+            this.TBox_UpFreq.Size = new System.Drawing.Size(205, 35);
             this.TBox_UpFreq.TabIndex = 4;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(623, 380);
+            this.label3.Location = new System.Drawing.Point(567, 382);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(154, 24);
             this.label3.TabIndex = 7;
@@ -124,14 +117,15 @@
             // 
             // TBox_NextFreq
             // 
-            this.TBox_NextFreq.Location = new System.Drawing.Point(352, 377);
+            this.TBox_NextFreq.Location = new System.Drawing.Point(356, 379);
             this.TBox_NextFreq.Name = "TBox_NextFreq";
-            this.TBox_NextFreq.Size = new System.Drawing.Size(265, 35);
+            this.TBox_NextFreq.ReadOnly = true;
+            this.TBox_NextFreq.Size = new System.Drawing.Size(205, 35);
             this.TBox_NextFreq.TabIndex = 6;
             // 
             // Btn_SerialCfg
             // 
-            this.Btn_SerialCfg.Location = new System.Drawing.Point(325, 28);
+            this.Btn_SerialCfg.Location = new System.Drawing.Point(268, 28);
             this.Btn_SerialCfg.Name = "Btn_SerialCfg";
             this.Btn_SerialCfg.Size = new System.Drawing.Size(198, 45);
             this.Btn_SerialCfg.TabIndex = 8;
@@ -141,9 +135,9 @@
             // 
             // Btn_OpenSerial
             // 
-            this.Btn_OpenSerial.Location = new System.Drawing.Point(559, 28);
+            this.Btn_OpenSerial.Location = new System.Drawing.Point(488, 28);
             this.Btn_OpenSerial.Name = "Btn_OpenSerial";
-            this.Btn_OpenSerial.Size = new System.Drawing.Size(211, 49);
+            this.Btn_OpenSerial.Size = new System.Drawing.Size(219, 49);
             this.Btn_OpenSerial.TabIndex = 9;
             this.Btn_OpenSerial.Text = "打开串口...";
             this.Btn_OpenSerial.UseVisualStyleBackColor = true;
@@ -151,16 +145,16 @@
             // 
             // InfoBox
             // 
-            this.InfoBox.Location = new System.Drawing.Point(842, 28);
+            this.InfoBox.Location = new System.Drawing.Point(795, 28);
             this.InfoBox.Multiline = true;
             this.InfoBox.Name = "InfoBox";
             this.InfoBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.InfoBox.Size = new System.Drawing.Size(401, 630);
+            this.InfoBox.Size = new System.Drawing.Size(448, 630);
             this.InfoBox.TabIndex = 10;
             // 
             // Btn_SendData
             // 
-            this.Btn_SendData.Location = new System.Drawing.Point(363, 438);
+            this.Btn_SendData.Location = new System.Drawing.Point(28, 353);
             this.Btn_SendData.Name = "Btn_SendData";
             this.Btn_SendData.Size = new System.Drawing.Size(244, 53);
             this.Btn_SendData.TabIndex = 11;
@@ -168,19 +162,9 @@
             this.Btn_SendData.UseVisualStyleBackColor = true;
             this.Btn_SendData.Click += new System.EventHandler(this.Btn_SendData_Click);
             // 
-            // Btn_CustomFreq
-            // 
-            this.Btn_CustomFreq.Location = new System.Drawing.Point(28, 442);
-            this.Btn_CustomFreq.Name = "Btn_CustomFreq";
-            this.Btn_CustomFreq.Size = new System.Drawing.Size(219, 45);
-            this.Btn_CustomFreq.TabIndex = 12;
-            this.Btn_CustomFreq.Text = "自定义...(&C)";
-            this.Btn_CustomFreq.UseVisualStyleBackColor = true;
-            this.Btn_CustomFreq.Click += new System.EventHandler(this.Btn_CustomFreq_Click);
-            // 
             // TBox_2pi
             // 
-            this.TBox_2pi.Location = new System.Drawing.Point(37, 547);
+            this.TBox_2pi.Location = new System.Drawing.Point(28, 547);
             this.TBox_2pi.Name = "TBox_2pi";
             this.TBox_2pi.Size = new System.Drawing.Size(265, 35);
             this.TBox_2pi.TabIndex = 13;
@@ -232,18 +216,18 @@
             // 
             // Btn_Debug
             // 
-            this.Btn_Debug.Location = new System.Drawing.Point(559, 132);
+            this.Btn_Debug.Location = new System.Drawing.Point(28, 98);
             this.Btn_Debug.Margin = new System.Windows.Forms.Padding(4);
             this.Btn_Debug.Name = "Btn_Debug";
-            this.Btn_Debug.Size = new System.Drawing.Size(219, 45);
+            this.Btn_Debug.Size = new System.Drawing.Size(219, 128);
             this.Btn_Debug.TabIndex = 19;
-            this.Btn_Debug.Text = "调试模式(&D)";
+            this.Btn_Debug.Text = "连接陀螺，进入调试模式(&D)";
             this.Btn_Debug.UseVisualStyleBackColor = true;
             this.Btn_Debug.Click += new System.EventHandler(this.Btn_Debug_Click);
             // 
             // Btn_GyroNoInput
             // 
-            this.Btn_GyroNoInput.Location = new System.Drawing.Point(37, 28);
+            this.Btn_GyroNoInput.Location = new System.Drawing.Point(28, 27);
             this.Btn_GyroNoInput.Name = "Btn_GyroNoInput";
             this.Btn_GyroNoInput.Size = new System.Drawing.Size(204, 46);
             this.Btn_GyroNoInput.TabIndex = 20;
@@ -253,7 +237,7 @@
             // 
             // Btn_GetCfgData
             // 
-            this.Btn_GetCfgData.Location = new System.Drawing.Point(28, 131);
+            this.Btn_GetCfgData.Location = new System.Drawing.Point(268, 98);
             this.Btn_GetCfgData.Name = "Btn_GetCfgData";
             this.Btn_GetCfgData.Size = new System.Drawing.Size(213, 49);
             this.Btn_GetCfgData.TabIndex = 21;
@@ -263,7 +247,7 @@
             // 
             // Btn_ConfigUart
             // 
-            this.Btn_ConfigUart.Location = new System.Drawing.Point(325, 134);
+            this.Btn_ConfigUart.Location = new System.Drawing.Point(508, 98);
             this.Btn_ConfigUart.Name = "Btn_ConfigUart";
             this.Btn_ConfigUart.Size = new System.Drawing.Size(198, 46);
             this.Btn_ConfigUart.TabIndex = 22;
@@ -289,11 +273,126 @@
             this.label7.TabIndex = 23;
             this.label7.Text = "环路增益参数";
             // 
+            // Btn_Reset
+            // 
+            this.Btn_Reset.Location = new System.Drawing.Point(268, 173);
+            this.Btn_Reset.Name = "Btn_Reset";
+            this.Btn_Reset.Size = new System.Drawing.Size(438, 53);
+            this.Btn_Reset.TabIndex = 24;
+            this.Btn_Reset.Text = "还原出厂设置";
+            this.Btn_Reset.UseVisualStyleBackColor = true;
+            this.Btn_Reset.Click += new System.EventHandler(this.Btn_Reset_Click);
+            // 
+            // Debug_Timer
+            // 
+            this.Debug_Timer.Interval = 2000;
+            this.Debug_Timer.Tick += new System.EventHandler(this.TimerEventProcessor);
+            // 
+            // Volt_Timer
+            // 
+            this.Volt_Timer.Interval = 1000;
+            this.Volt_Timer.Tick += new System.EventHandler(this.VoltTimerEventProcessor);
+            // 
+            // Loop_Timer
+            // 
+            this.Loop_Timer.Interval = 1000;
+            this.Loop_Timer.Tick += new System.EventHandler(this.LoopTimerEventProcessor);
+            // 
+            // UartCFG_Timer
+            // 
+            this.UartCFG_Timer.Interval = 1000;
+            this.UartCFG_Timer.Tick += new System.EventHandler(this.UartCfgTimerEventProcessor);
+            // 
+            // numericUpDown_FreqInex
+            // 
+            this.numericUpDown_FreqInex.Location = new System.Drawing.Point(33, 288);
+            this.numericUpDown_FreqInex.Maximum = new decimal(new int[] {
+            157,
+            0,
+            0,
+            0});
+            this.numericUpDown_FreqInex.Name = "numericUpDown_FreqInex";
+            this.numericUpDown_FreqInex.Size = new System.Drawing.Size(214, 35);
+            this.numericUpDown_FreqInex.TabIndex = 25;
+            this.numericUpDown_FreqInex.ValueChanged += new System.EventHandler(this.numericUpDown_FreqInex_ValueChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(33, 242);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(214, 24);
+            this.label8.TabIndex = 26;
+            this.label8.Text = "频率编号（0~157）";
+            // 
+            // Btn_ClearBox
+            // 
+            this.Btn_ClearBox.Location = new System.Drawing.Point(591, 456);
+            this.Btn_ClearBox.Name = "Btn_ClearBox";
+            this.Btn_ClearBox.Size = new System.Drawing.Size(181, 53);
+            this.Btn_ClearBox.TabIndex = 27;
+            this.Btn_ClearBox.Text = "清除显示文本";
+            this.Btn_ClearBox.UseVisualStyleBackColor = true;
+            this.Btn_ClearBox.Click += new System.EventHandler(this.Btn_ClearBox_Click);
+            // 
+            // numericUpDown_Module
+            // 
+            this.numericUpDown_Module.Location = new System.Drawing.Point(28, 456);
+            this.numericUpDown_Module.Maximum = new decimal(new int[] {
+            22,
+            0,
+            0,
+            0});
+            this.numericUpDown_Module.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown_Module.Name = "numericUpDown_Module";
+            this.numericUpDown_Module.Size = new System.Drawing.Size(227, 35);
+            this.numericUpDown_Module.TabIndex = 28;
+            this.numericUpDown_Module.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(28, 426);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(298, 24);
+            this.label9.TabIndex = 29;
+            this.label9.Text = "调制参数（1的个数10~22）";
+            // 
+            // Btn_ModuleData
+            // 
+            this.Btn_ModuleData.Location = new System.Drawing.Point(325, 453);
+            this.Btn_ModuleData.Name = "Btn_ModuleData";
+            this.Btn_ModuleData.Size = new System.Drawing.Size(185, 53);
+            this.Btn_ModuleData.TabIndex = 30;
+            this.Btn_ModuleData.Text = "发送调制参数";
+            this.Btn_ModuleData.UseVisualStyleBackColor = true;
+            this.Btn_ModuleData.Click += new System.EventHandler(this.Btn_ModuleData_Click);
+            // 
+            // Module_Timer
+            // 
+            this.Module_Timer.Interval = 1000;
+            this.Module_Timer.Tick += new System.EventHandler(this.ModuleTimerEventProcessor);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1270, 757);
+            this.Controls.Add(this.Btn_ModuleData);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.numericUpDown_Module);
+            this.Controls.Add(this.Btn_ClearBox);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.numericUpDown_FreqInex);
+            this.Controls.Add(this.Btn_Reset);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.Btn_ConfigUart);
@@ -306,7 +405,6 @@
             this.Controls.Add(this.TBOX_LoopGain);
             this.Controls.Add(this.Btn_SendPi);
             this.Controls.Add(this.TBox_2pi);
-            this.Controls.Add(this.Btn_CustomFreq);
             this.Controls.Add(this.Btn_SendData);
             this.Controls.Add(this.InfoBox);
             this.Controls.Add(this.Btn_OpenSerial);
@@ -317,12 +415,12 @@
             this.Controls.Add(this.TBox_UpFreq);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.TBox_NowFreq);
-            this.Controls.Add(this.Btn_SendDown);
-            this.Controls.Add(this.Btn_SendUp);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Form1";
             this.Text = "陀螺调试助手";
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_FreqInex)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Module)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -331,8 +429,6 @@
         #endregion
 
         private System.IO.Ports.SerialPort serialPort;
-        private System.Windows.Forms.Button Btn_SendUp;
-        private System.Windows.Forms.Button Btn_SendDown;
         private System.Windows.Forms.TextBox TBox_NowFreq;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
@@ -343,7 +439,6 @@
         private System.Windows.Forms.Button Btn_OpenSerial;
         private System.Windows.Forms.TextBox InfoBox;
         private System.Windows.Forms.Button Btn_SendData;
-        private System.Windows.Forms.Button Btn_CustomFreq;
         private System.Windows.Forms.TextBox TBox_2pi;
         private System.Windows.Forms.Button Btn_SendPi;
         private System.Windows.Forms.Button Btn_LoopGain;
@@ -356,6 +451,18 @@
         private System.Windows.Forms.Button Btn_ConfigUart;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button Btn_Reset;
+        private System.Windows.Forms.Timer Debug_Timer;
+        private System.Windows.Forms.Timer Volt_Timer;
+        private System.Windows.Forms.Timer Loop_Timer;
+        private System.Windows.Forms.Timer UartCFG_Timer;
+        private System.Windows.Forms.NumericUpDown numericUpDown_FreqInex;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button Btn_ClearBox;
+        private System.Windows.Forms.NumericUpDown numericUpDown_Module;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button Btn_ModuleData;
+        private System.Windows.Forms.Timer Module_Timer;
     }
 }
 
