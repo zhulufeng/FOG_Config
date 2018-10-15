@@ -757,7 +757,7 @@ namespace FOG_Config
             BytedataArray[1] = 0xEE;
             BytedataArray[2] = 0x00;
             BytedataArray[3] = 0x00;
-            BytedataArray[4] = 0x03;
+            BytedataArray[4] = 0x3F;
             BytedataArray[5] = 0xFF;
             serialData.DebugSendModuleFlag = true;
             serialPort.Write(BytedataArray, 0, 6);
@@ -814,7 +814,7 @@ namespace FOG_Config
                     InfoBox.Text += "\r\n";
                     if (serialData.DebugResetFlag)
                     {
-                        SendUartCfg();
+                        SendModuleData();
                     }
 
                 }
@@ -847,10 +847,13 @@ namespace FOG_Config
                 {
                     InfoBox.Text += "通讯参数设置成功！";
                     InfoBox.Text += "\r\n";
-                    if (serialData.DebugResetFlag)
-                    {
-                        SendModuleData();
-                    }
+                    InfoBox.Text += "全部默认参数设置成功！";
+                    InfoBox.Text += "\r\n";
+
+                    //                     if (serialData.DebugResetFlag)
+                    //                     {
+                    //                         SendModuleData();
+                    //                     }
 
                 }
                 else
@@ -944,12 +947,17 @@ namespace FOG_Config
                 {
                     InfoBox.Text += "调制参数设置成功！";
                     InfoBox.Text += "\r\n";
-
+                    if (serialData.DebugResetFlag)
+                    {
+                        SendUartCfg();
+                    }
+                    
                 }
                 else
                 {
                     InfoBox.Text += "调制参数设置不成功！";
                     InfoBox.Text += "\r\n";
+
                 }
                 serialData.DebugModuleFlag = false;
                 serialData.DebugSendModuleFlag = false;

@@ -314,6 +314,11 @@
             this.numericUpDown_FreqInex.Name = "numericUpDown_FreqInex";
             this.numericUpDown_FreqInex.Size = new System.Drawing.Size(214, 35);
             this.numericUpDown_FreqInex.TabIndex = 25;
+            this.numericUpDown_FreqInex.Value = new decimal(new int[] {
+            87,
+            0,
+            0,
+            0});
             this.numericUpDown_FreqInex.ValueChanged += new System.EventHandler(this.numericUpDown_FreqInex_ValueChanged);
             // 
             // label8
@@ -352,7 +357,7 @@
             this.numericUpDown_Module.Size = new System.Drawing.Size(227, 35);
             this.numericUpDown_Module.TabIndex = 28;
             this.numericUpDown_Module.Value = new decimal(new int[] {
-            10,
+            14,
             0,
             0,
             0});
