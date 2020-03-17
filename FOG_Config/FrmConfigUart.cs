@@ -29,7 +29,7 @@ namespace FOG_Config
             if (rBtn_Trigger_mangfa.Checked)
             {
                 UartData.UartInfo[2] = (int)UartData.TriggerNum.mangfa;
-                rBtn_Upd_1000.Checked = true;
+                //rBtn_Upd_1000.Checked = true;
             }
             if (rBtn_Trigger_woshou.Checked)
             {
@@ -83,8 +83,15 @@ namespace FOG_Config
                 if (rBtn_Trigger_woshou.Checked)
                 {
                     rBtn_Upd_400.Checked = false;
+                    rBtn_Upd_1000.Checked = false;
                     rBtn_Upd_woshou.Checked = true;
                     MessageBox.Show("握手状态，不能选择更新率！");
+                }
+                else
+                {
+                    rBtn_Upd_400.Checked = true;
+                    rBtn_Upd_1000.Checked = false;
+                    rBtn_Upd_woshou.Checked = false;
                 }
             }
         }
@@ -96,19 +103,27 @@ namespace FOG_Config
                 if (rBtn_Trigger_woshou.Checked)
                 {
                     rBtn_Upd_1000.Checked = false;
+                    rBtn_Upd_400.Checked = false;
                     rBtn_Upd_woshou.Checked = true;
                     MessageBox.Show("握手状态，不能选择更新率！");
+                }
+                else
+                {
+                    rBtn_Upd_1000.Checked = true;
+                    rBtn_Upd_400.Checked = false;
+                    rBtn_Upd_woshou.Checked = false;
                 }
             }
         }
 
         private void rBtn_Upd_woshou_CheckedChanged(object sender, EventArgs e)
         {
-            if (rBtn_Upd_woshou.Checked)
+            if (rBtn_Trigger_woshou.Checked)
             {
                 if (rBtn_Trigger_mangfa.Checked)
                 {
                     rBtn_Upd_woshou.Checked = false;
+                    rBtn_Upd_400.Checked = false;
                     rBtn_Upd_1000.Checked = true;
                     
                     MessageBox.Show("盲发状态，必须选择更新率，默认为1000Hz！");
@@ -121,6 +136,8 @@ namespace FOG_Config
             if (rBtn_Trigger_mangfa.Checked)
             {
                 rBtn_Upd_1000.Checked = true;
+                rBtn_Upd_woshou.Checked = false;
+                rBtn_Upd_400.Checked = false;
             }
         }
     }

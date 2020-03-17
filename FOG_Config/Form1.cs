@@ -310,7 +310,7 @@ namespace FOG_Config
             }
             else
             {
-                while (serialData.ReceiveData.Count >= 58)//64
+                while (serialData.ReceiveData.Count >= 64)//58
                 {
                     if (serialData.ReceiveData[0] == 0x55 && serialData.ReceiveData[1] == 0xFB)
                     {
@@ -372,18 +372,18 @@ namespace FOG_Config
             serialData.ReceiveData.CopyTo(22, tempByteList, 0, 2);
             CustomData.LoopGain = Convert.ToInt32(tempByteList[1]) + Convert.ToInt32(tempByteList[0]) * 256;
             //读取调制配置参数
-            //serialData.ReceiveData.CopyTo(24, tempByteList, 0, 6);
-            //CustomData.Moduledata = Convert.ToInt32(tempByteList[5]) + Convert.ToInt32(tempByteList[4]) * 256 + Convert.ToInt32(tempByteList[3]) * 256 * 256 + Convert.ToInt32(tempByteList[2]) * 256 * 256 * 256;
-            //读取通讯配置参数
-           // serialData.ReceiveData.CopyTo(30, tempByteList, 0, 6);
             serialData.ReceiveData.CopyTo(24, tempByteList, 0, 6);
+            CustomData.Moduledata = Convert.ToInt32(tempByteList[5]) + Convert.ToInt32(tempByteList[4]) * 256 + Convert.ToInt32(tempByteList[3]) * 256 * 256 + Convert.ToInt32(tempByteList[2]) * 256 * 256 * 256;
+            //读取通讯配置参数
+            serialData.ReceiveData.CopyTo(30, tempByteList, 0, 6);
+           // serialData.ReceiveData.CopyTo(24, tempByteList, 0, 6);
             Triggerdata = Convert.ToInt32(tempByteList[2]);
             Protocodata = Convert.ToInt32(tempByteList[3]);
             Bauddata = Convert.ToInt32(tempByteList[4]);
             Upddata = Convert.ToInt32(tempByteList[5]);
 
-            //serialData.ReceiveData.CopyTo(36, tempByteList, 0, 16);
-            serialData.ReceiveData.CopyTo(30, tempByteList, 0, 16);
+            serialData.ReceiveData.CopyTo(36, tempByteList, 0, 16);
+            //serialData.ReceiveData.CopyTo(30, tempByteList, 0, 16);
             MyVersionInfo.FGyroType = Convert.ToInt32(tempByteList[2]);
             for (int i = 0; i < 5; i++)
             {
@@ -391,14 +391,14 @@ namespace FOG_Config
                 MyVersionInfo.HexTime[i] = Convert.ToInt32(tempByteList[10 + i]);
             }
             MyVersionInfo.DotNum = Convert.ToInt32(tempByteList[15]);
-            //serialData.ReceiveData.CopyTo(52, tempByteList, 0, 8);
-            serialData.ReceiveData.CopyTo(46, tempByteList, 0, 8);
+            serialData.ReceiveData.CopyTo(52, tempByteList, 0, 8);
+            //serialData.ReceiveData.CopyTo(46, tempByteList, 0, 8);
             for (int i = 0; i < 8; i++)
             {
                 MyVersionInfo.CoreID += tempByteList[i].ToString("X2");
             }
-            //serialData.ReceiveData.CopyTo(60, tempByteList, 0, 4);
-            serialData.ReceiveData.CopyTo(54, tempByteList, 0, 4);
+            serialData.ReceiveData.CopyTo(60, tempByteList, 0, 4);
+            //serialData.ReceiveData.CopyTo(54, tempByteList, 0, 4);
             for (int i = 0; i < 4; i++)
             {
                 MyVersionInfo.FuncInfo += tempByteList[i].ToString("X2");
@@ -407,7 +407,7 @@ namespace FOG_Config
             InfoBox.Text += "时钟频率：" + FreqIndex.ToString() + "\r\n";
             InfoBox.Text += "2π电压：" + CustomData.Volt2pi.ToString() + "\r\n";
             InfoBox.Text += "环路增益：" + CustomData.LoopGain.ToString() + "\r\n";
-            //InfoBox.Text += "调制参数：0x" + CustomData.Moduledata.ToString("X8") + "\r\n";
+            InfoBox.Text += "调制参数：0x" + CustomData.Moduledata.ToString("X8") + "\r\n";
             InfoBox.Text += "\r\n" + "通讯协议：" + "\r\n";
             InfoBox.Text += "触发方式：" + UartData.TriggerString[Triggerdata] + "\r\n";
             InfoBox.Text += "通讯协议：" + UartData.ProtocolString[Protocodata] + "\r\n";
@@ -649,6 +649,7 @@ namespace FOG_Config
                     Btn_LoopGain.Enabled = true;
                     Btn_GetCfgData.Enabled = true;
                     Btn_Reset.Enabled = true;
+                    Btn_ModuleData.Enabled = true;
                 }
                 else
                 {
@@ -694,7 +695,7 @@ namespace FOG_Config
 
             BytedataArray[0] = 0x55;
             BytedataArray[1] = 0xBB;
-            BytedataArray[2] = 0xDA; ;
+            BytedataArray[2] = 0xC4;//DA
             BytedataArray[3] = 0x00;
             InfoBox.Text += "发送默认2π电压参数！";
 
