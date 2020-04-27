@@ -37,6 +37,15 @@ namespace FOG_Config
         public static bool DebugLoopGainFlag = false;
         public static bool DebugResetFlag = false;
         public static bool NextStepEnable = false;
+
+        public static bool DebugSendSFtemParaFlag = false;
+        public static bool DebugSendBiastemParaFlag = false;
+        public static bool DebugSFtemParaFlag = false;
+        public static bool DebugBiastemParaFlag = false;
+        public static bool DebugSendtemParaONFlag = false;
+        public static bool DebugSendtemParaOFFFlag = false;
+        public static bool DebugtemParaONFlag = false;
+        public static bool DebugtemParaOFFFlag = false;
     }
    class CustomData
     {
@@ -96,5 +105,12 @@ namespace FOG_Config
         public static int DotNum;
         public static string CoreID = null;
         public static string FuncInfo = null;
+    }
+    class TemParacls
+    {
+        public double[] d_SF_para = new double[2];
+        public double[] d_Bias_para = new double[4];
+        public Int32[] i_SF_para = new Int32[2];
+        public Int32[] i_Bias_para = new Int32[4];
     }
 }

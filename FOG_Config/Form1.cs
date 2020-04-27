@@ -12,11 +12,13 @@ using System.IO;
 
 namespace FOG_Config
 {
+    
     public partial class Form1 : Form
     {
         delegate void UpdateDataEventHandler();
         UpdateDataEventHandler DelgeateShow;
         StreamWriter SW_CfgFile = null;
+        TemParacls temPara = new TemParacls();
         public Form1()
         {
             InitializeComponent();
@@ -292,6 +294,7 @@ namespace FOG_Config
 
                 }
             }
+            //接收标度因数参数返回指令
             if (serialData.DebugSendModuleFlag)
             {
                 for (int i = 0; i < serialData.ReceiveData.Count; i++)
@@ -299,6 +302,57 @@ namespace FOG_Config
                     if (serialData.ReceiveData[i] == 0x1E)
                     {
                         serialData.DebugModuleFlag = true;
+                        serialData.ReceiveData.Clear();
+                    }
+
+                }
+            }
+            //接收零偏参数返回指令
+            if (serialData.DebugSendSFtemParaFlag)
+            {
+                for (int i = 0; i < serialData.ReceiveData.Count; i++)
+                {
+                    if (serialData.ReceiveData[i] == 0x11)
+                    {
+                        serialData.DebugSFtemParaFlag = true;
+                        serialData.ReceiveData.Clear();
+                    }
+
+                }
+            }
+            //接收打开温补返回
+            if (serialData.DebugSendtemParaONFlag)
+            {
+                for (int i = 0; i < serialData.ReceiveData.Count; i++)
+                {
+                    if (serialData.ReceiveData[i] == 0x33)
+                    {
+                        serialData.DebugtemParaONFlag = true;
+                        serialData.ReceiveData.Clear();
+                    }
+
+                }
+            }
+            //接收关闭温补返回
+            if (serialData.DebugSendtemParaOFFFlag)
+            {
+                for (int i = 0; i < serialData.ReceiveData.Count; i++)
+                {
+                    if (serialData.ReceiveData[i] == 0x33)
+                    {
+                        serialData.DebugtemParaOFFFlag = true;
+                        serialData.ReceiveData.Clear();
+                    }
+
+                }
+            }
+            if (serialData.DebugSendBiastemParaFlag)
+            {
+                for (int i = 0; i < serialData.ReceiveData.Count; i++)
+                {
+                    if (serialData.ReceiveData[i] == 0x22)
+                    {
+                        serialData.DebugBiastemParaFlag = true;
                         serialData.ReceiveData.Clear();
                     }
 
@@ -974,6 +1028,314 @@ namespace FOG_Config
             this.InfoBox.Select(this.InfoBox.Text.Length, 0);
             //滚动到控件光标处 
             this.InfoBox.ScrollToCaret();
+        }
+
+        private void Btn_ReadTemPareByFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ConfigFileLoadDlg = new OpenFileDialog();
+            
+
+            string ConfigFileLoadPath = null;
+            ConfigFileLoadDlg.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+            ConfigFileLoadDlg.DefaultExt = "txt";
+            ConfigFileLoadDlg.Filter = "txt File(.txt)|*.txt";
+            if (ConfigFileLoadDlg.ShowDialog() == DialogResult.OK)
+            {
+                ConfigFileLoadPath = ConfigFileLoadDlg.FileName;
+            }
+            StreamReader SR = new StreamReader(ConfigFileLoadPath);
+            string dataLine;//一行字符串
+            string[] dataSplited;//分割后字符串数组
+
+            char[] rnSplitChar = new char[] { '\r', '\n' };//分割符号
+            char[] trnSplitChar = new char[] { '\r', '\n', '\t', ' ', ',','，'};
+            double Freqdata = 0.0;
+            string Hexdata = "";
+            string[] HexdataArray = new string[14];
+
+            while (!SR.EndOfStream)
+            {
+                dataLine = SR.ReadLine();
+                if (dataLine != "")
+                {
+                    if (dataLine[0] == '#' && dataLine != "")
+                    {
+                        dataLine = dataLine.Substring(1);
+                        dataSplited = dataLine.Split(trnSplitChar, StringSplitOptions.RemoveEmptyEntries);//开始分割
+                        for (int i = 0; i < 2; i++)
+                        {
+                            temPara.d_SF_para[i] = Convert.ToDouble(dataSplited[i]);
+                        }
+                    }
+
+                    if (dataLine[0] == '$' && dataLine != "")
+                    {
+                        dataLine = dataLine.Substring(1);
+                        dataSplited = dataLine.Split(trnSplitChar, StringSplitOptions.RemoveEmptyEntries);//开始分割
+                        for (int i = 0; i < 4; i++)
+                        {
+                            temPara.d_Bias_para[i] = Convert.ToDouble(dataSplited[i]);
+                        }
+                    }
+                }
+            }
+            tBox_sfk1.Text = temPara.d_SF_para[0].ToString();
+            tBox_sfk2.Text = temPara.d_SF_para[1].ToString();
+
+            tBox_BiasK1.Text = temPara.d_Bias_para[0].ToString();
+            tBox_BiasK23.Text = temPara.d_Bias_para[1].ToString();
+            tBox_BiasK22.Text = temPara.d_Bias_para[2].ToString();
+            tBox_BiasK21.Text = temPara.d_Bias_para[3].ToString();
+            SR.Close();
+        }
+
+        private void Btn_Send_TemPara_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                temPara.d_Bias_para[0] = Convert.ToDouble(tBox_BiasK1.Text);
+                temPara.d_Bias_para[1] = Convert.ToDouble(tBox_BiasK23.Text);
+                temPara.d_Bias_para[2] = Convert.ToDouble(tBox_BiasK22.Text);
+                temPara.d_Bias_para[3] = Convert.ToDouble(tBox_BiasK21.Text);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("温补数据异常！");
+                //throw;
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                temPara.i_Bias_para[i] = Convert.ToInt32(temPara.d_Bias_para[i] * (i==0? 1024.0:65536.0));
+                
+            }
+            SendBiasPara();
+           
+
+        }
+        private void SendSFtemPara()
+        {
+            byte[] Sendbuff = new byte[10];
+            
+            Sendbuff[0] = 0x55;
+            Sendbuff[1] = 0x11;
+            Sendbuff[2] = Convert.ToByte((temPara.i_SF_para[0] >> 24) & 0xFF);
+            Sendbuff[3] = Convert.ToByte((temPara.i_SF_para[0] >> 16) & 0xFF);
+            Sendbuff[4] = Convert.ToByte((temPara.i_SF_para[0] >> 8) & 0xFF);
+            Sendbuff[5] = Convert.ToByte(temPara.i_SF_para[0] & 0xFF);
+            Sendbuff[6] = Convert.ToByte((temPara.i_SF_para[1] >> 24) & 0xFF);
+            Sendbuff[7] = Convert.ToByte((temPara.i_SF_para[1] >> 16) & 0xFF);
+            Sendbuff[8] = Convert.ToByte((temPara.i_SF_para[1] >> 8) & 0xFF);
+            Sendbuff[9] = Convert.ToByte(temPara.i_SF_para[1] & 0xFF);
+
+            serialData.DebugSendSFtemParaFlag = true;
+            serialPort.Write(Sendbuff, 0, 10);
+            SF_Timer.Start();
+            InfoBox.Text += "发送的标度温补参数是：SF_K1 " + temPara.d_SF_para[0].ToString() + "\tSF_K2: " + temPara.d_SF_para[1].ToString() + "\r\n";
+            InfoBox.Text += "对应数据码是：" + "\r\n";
+            for (int i = 0; i < Sendbuff.Length; i++)
+            {
+                InfoBox.Text += "0x" + Sendbuff[i].ToString("X2") + " ";
+            }
+            InfoBox.Text += "\r\n";
+            //让文本框获取焦点 
+            this.InfoBox.Focus();
+            //设置光标的位置到文本尾 
+            this.InfoBox.Select(this.InfoBox.Text.Length, 0);
+            //滚动到控件光标处 
+            this.InfoBox.ScrollToCaret();
+        }
+
+        private void SFtemParaTimerEventProcessor(object sender, EventArgs e)
+        {
+            SF_Timer.Stop();
+            if (serialData.DebugSFtemParaFlag)
+            {
+                InfoBox.Text += "标度因数温补参数发送成功。\r\n";                
+            }
+            else
+            {
+                InfoBox.Text += "未收到标度因数参数返回信息,请确认！\r\n";
+            }
+            serialData.DebugSendSFtemParaFlag = false;
+            //让文本框获取焦点 
+            this.InfoBox.Focus();
+            //设置光标的位置到文本尾 
+            this.InfoBox.Select(this.InfoBox.Text.Length, 0);
+            //滚动到控件光标处 
+            this.InfoBox.ScrollToCaret();
+        }
+        private void SendBiasPara()
+        {
+            byte[] Sendbuff = new byte[18];
+
+            Sendbuff[0]  = 0x55;
+            Sendbuff[1]  = 0x22;
+            Sendbuff[2]  = Convert.ToByte((temPara.i_Bias_para[0] >> 24) & 0xFF);
+            Sendbuff[3]  = Convert.ToByte((temPara.i_Bias_para[0] >> 16) & 0xFF);
+            Sendbuff[4]  = Convert.ToByte((temPara.i_Bias_para[0] >> 8) & 0xFF);
+            Sendbuff[5]  = Convert.ToByte(temPara.i_Bias_para[0] & 0xFF);
+            Sendbuff[6]  = Convert.ToByte((temPara.i_Bias_para[1] >> 24) & 0xFF);
+            Sendbuff[7]  = Convert.ToByte((temPara.i_Bias_para[1] >> 16) & 0xFF);
+            Sendbuff[8]  = Convert.ToByte((temPara.i_Bias_para[1] >> 8) & 0xFF);
+            Sendbuff[9]  = Convert.ToByte(temPara.i_Bias_para[1] & 0xFF);
+            Sendbuff[10] = Convert.ToByte((temPara.i_Bias_para[2] >> 24) & 0xFF);
+            Sendbuff[11] = Convert.ToByte((temPara.i_Bias_para[2] >> 16) & 0xFF);
+            Sendbuff[12] = Convert.ToByte((temPara.i_Bias_para[2] >> 8) & 0xFF);
+            Sendbuff[13] = Convert.ToByte(temPara.i_Bias_para[2] & 0xFF);
+            Sendbuff[14] = Convert.ToByte((temPara.i_Bias_para[3] >> 24) & 0xFF);
+            Sendbuff[15] = Convert.ToByte((temPara.i_Bias_para[3] >> 16) & 0xFF);
+            Sendbuff[16] = Convert.ToByte((temPara.i_Bias_para[3] >> 8) & 0xFF);
+            Sendbuff[17] = Convert.ToByte(temPara.i_Bias_para[3] & 0xFF);
+
+
+            serialData.DebugSendBiastemParaFlag = true;
+            serialPort.Write(Sendbuff, 0, 18);
+            Bias_Timer.Start();
+            InfoBox.Text += "发送的零偏温补参数是：Bias_K1 " + temPara.d_Bias_para[0].ToString() + "\tBias_K23: " + temPara.d_Bias_para[1].ToString()
+                                + "\tBias_K22: " + temPara.d_Bias_para[2].ToString() + "\tBias_K21: " + temPara.d_Bias_para[3].ToString() + "\r\n";
+            InfoBox.Text += "对应数据码是：" + "\r\n";
+            for (int i = 0; i < Sendbuff.Length; i++)
+            {
+                InfoBox.Text += "0x" + Sendbuff[i].ToString("X2") + " ";
+            }
+            InfoBox.Text += "\r\n";
+            //让文本框获取焦点 
+            this.InfoBox.Focus();
+            //设置光标的位置到文本尾 
+            this.InfoBox.Select(this.InfoBox.Text.Length, 0);
+            //滚动到控件光标处 
+            this.InfoBox.ScrollToCaret();
+        }
+
+        private void BiasTemParaTimerEventProcessor(object sender, EventArgs e)
+        {
+            Bias_Timer.Stop();
+            if (serialData.DebugBiastemParaFlag)
+            {
+                InfoBox.Text += "零偏温补参数发送成功。\r\n";
+            }
+            else
+            {
+                InfoBox.Text += "未收零偏参数返回信息。\r\n";
+            }
+            serialData.DebugSendBiastemParaFlag = false;
+            //让文本框获取焦点 
+            this.InfoBox.Focus();
+            //设置光标的位置到文本尾 
+            this.InfoBox.Select(this.InfoBox.Text.Length, 0);
+            //滚动到控件光标处 
+            this.InfoBox.ScrollToCaret();
+        }
+
+        private void Btn_TemPara_ON_Click(object sender, EventArgs e)
+        {
+            byte[] Sendbuff = new byte[3];
+
+            Sendbuff[0] = 0x55;
+            Sendbuff[1] = 0x33;
+            Sendbuff[2] = 0x01;
+           
+
+            serialData.DebugSendtemParaONFlag = true;
+            serialPort.Write(Sendbuff, 0, 3);
+            Switch_Timer.Start();
+            InfoBox.Text += "发送打开温补指令\r\n";
+            InfoBox.Text += "对应数据码是：" + "\r\n";
+            for (int i = 0; i < Sendbuff.Length; i++)
+            {
+                InfoBox.Text += "0x" + Sendbuff[i].ToString("X2") + " ";
+            }
+            InfoBox.Text += "\r\n";
+            //让文本框获取焦点 
+            this.InfoBox.Focus();
+            //设置光标的位置到文本尾 
+            this.InfoBox.Select(this.InfoBox.Text.Length, 0);
+            //滚动到控件光标处 
+            this.InfoBox.ScrollToCaret();
+        }
+
+        private void SwitchTimerEventProcessor(object sender, EventArgs e)
+        {
+            Switch_Timer.Stop();
+            if (serialData.DebugSendtemParaONFlag)
+            {
+                if (serialData.DebugtemParaONFlag)
+                {
+                    InfoBox.Text += "打开温补指令发送成功。\r\n";
+                }
+                else
+                {
+                    InfoBox.Text += "未收到打开温补指令返回。\r\n";
+                }
+            }
+            if (serialData.DebugSendtemParaOFFFlag)
+            {
+                if (serialData.DebugtemParaOFFFlag)
+                {
+                    InfoBox.Text += "关闭温补指令发送成功。\r\n";
+                }
+                else
+                {
+                    InfoBox.Text += "未收到关闭温补指令返回。\r\n";
+                }
+            }
+            serialData.DebugSendtemParaOFFFlag = false;
+            serialData.DebugSendtemParaONFlag = false;
+            //让文本框获取焦点 
+            this.InfoBox.Focus();
+            //设置光标的位置到文本尾 
+            this.InfoBox.Select(this.InfoBox.Text.Length, 0);
+            //滚动到控件光标处 
+            this.InfoBox.ScrollToCaret();
+        }
+
+        private void Btn_TemPara_OFF_Click(object sender, EventArgs e)
+        {
+            byte[] Sendbuff = new byte[3];
+
+            Sendbuff[0] = 0x55;
+            Sendbuff[1] = 0x33;
+            Sendbuff[2] = 0x00;
+
+
+            serialData.DebugSendtemParaOFFFlag = true;
+            serialPort.Write(Sendbuff, 0, 3);
+            Switch_Timer.Start();
+            InfoBox.Text += "发送关闭温补指令\r\n";
+            InfoBox.Text += "对应数据码是：" + "\r\n";
+            for (int i = 0; i < Sendbuff.Length; i++)
+            {
+                InfoBox.Text += "0x" + Sendbuff[i].ToString("X2") + " ";
+            }
+            InfoBox.Text += "\r\n";
+            //让文本框获取焦点 
+            this.InfoBox.Focus();
+            //设置光标的位置到文本尾 
+            this.InfoBox.Select(this.InfoBox.Text.Length, 0);
+            //滚动到控件光标处 
+            this.InfoBox.ScrollToCaret();
+        }
+
+        private void Btn_SendSFPara_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                temPara.d_SF_para[0] = Convert.ToDouble(tBox_sfk1.Text);
+                temPara.d_SF_para[1] = Convert.ToDouble(tBox_sfk2.Text);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("温补数据异常！");
+                //throw;
+            }
+
+            for (int i = 0; i < 2; i++)
+            {
+                temPara.i_SF_para[i] = Convert.ToInt32(temPara.d_SF_para[i] * 65536.0);
+            }
+            SendSFtemPara();
         }
     }
 }
