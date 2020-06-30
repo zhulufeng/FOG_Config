@@ -84,6 +84,8 @@
             this.Btn_SendSFPara = new System.Windows.Forms.Button();
             this.tBox_BiasK23 = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
+            this.tBox_ModulePara = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_FreqInex)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Module)).BeginInit();
             this.SuspendLayout();
@@ -194,7 +196,7 @@
             // 
             // TBox_2pi
             // 
-            this.TBox_2pi.Location = new System.Drawing.Point(14, 274);
+            this.TBox_2pi.Location = new System.Drawing.Point(14, 269);
             this.TBox_2pi.Margin = new System.Windows.Forms.Padding(2);
             this.TBox_2pi.Name = "TBox_2pi";
             this.TBox_2pi.Size = new System.Drawing.Size(134, 21);
@@ -213,7 +215,7 @@
             // 
             // Btn_LoopGain
             // 
-            this.Btn_LoopGain.Location = new System.Drawing.Point(226, 301);
+            this.Btn_LoopGain.Location = new System.Drawing.Point(226, 303);
             this.Btn_LoopGain.Margin = new System.Windows.Forms.Padding(2);
             this.Btn_LoopGain.Name = "Btn_LoopGain";
             this.Btn_LoopGain.Size = new System.Drawing.Size(153, 24);
@@ -224,7 +226,7 @@
             // 
             // TBOX_LoopGain
             // 
-            this.TBOX_LoopGain.Location = new System.Drawing.Point(14, 312);
+            this.TBOX_LoopGain.Location = new System.Drawing.Point(14, 306);
             this.TBOX_LoopGain.Margin = new System.Windows.Forms.Padding(2);
             this.TBOX_LoopGain.Name = "TBOX_LoopGain";
             this.TBOX_LoopGain.Size = new System.Drawing.Size(134, 21);
@@ -233,7 +235,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(160, 275);
+            this.label4.Location = new System.Drawing.Point(160, 273);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(47, 12);
@@ -243,7 +245,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(160, 313);
+            this.label5.Location = new System.Drawing.Point(160, 310);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(47, 12);
@@ -297,7 +299,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(18, 258);
+            this.label6.Location = new System.Drawing.Point(16, 255);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(71, 12);
@@ -307,7 +309,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(14, 298);
+            this.label7.Location = new System.Drawing.Point(14, 292);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(77, 12);
@@ -376,7 +378,7 @@
             // 
             // Btn_ClearBox
             // 
-            this.Btn_ClearBox.Location = new System.Drawing.Point(296, 228);
+            this.Btn_ClearBox.Location = new System.Drawing.Point(323, 228);
             this.Btn_ClearBox.Margin = new System.Windows.Forms.Padding(2);
             this.Btn_ClearBox.Name = "Btn_ClearBox";
             this.Btn_ClearBox.Size = new System.Drawing.Size(90, 26);
@@ -390,20 +392,15 @@
             this.numericUpDown_Module.Location = new System.Drawing.Point(14, 228);
             this.numericUpDown_Module.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDown_Module.Maximum = new decimal(new int[] {
-            22,
-            0,
-            0,
-            0});
-            this.numericUpDown_Module.Minimum = new decimal(new int[] {
-            10,
+            64,
             0,
             0,
             0});
             this.numericUpDown_Module.Name = "numericUpDown_Module";
-            this.numericUpDown_Module.Size = new System.Drawing.Size(114, 21);
+            this.numericUpDown_Module.Size = new System.Drawing.Size(63, 21);
             this.numericUpDown_Module.TabIndex = 28;
             this.numericUpDown_Module.Value = new decimal(new int[] {
-            14,
+            19,
             0,
             0,
             0});
@@ -414,13 +411,13 @@
             this.label9.Location = new System.Drawing.Point(14, 213);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(149, 12);
+            this.label9.Size = new System.Drawing.Size(89, 12);
             this.label9.TabIndex = 29;
-            this.label9.Text = "调制参数（1的个数10~22）";
+            this.label9.Text = "1的个数(0~64）";
             // 
             // Btn_ModuleData
             // 
-            this.Btn_ModuleData.Location = new System.Drawing.Point(162, 226);
+            this.Btn_ModuleData.Location = new System.Drawing.Point(226, 228);
             this.Btn_ModuleData.Margin = new System.Windows.Forms.Padding(2);
             this.Btn_ModuleData.Name = "Btn_ModuleData";
             this.Btn_ModuleData.Size = new System.Drawing.Size(92, 26);
@@ -471,7 +468,7 @@
             // 
             // Btn_ReadTemPareByFile
             // 
-            this.Btn_ReadTemPareByFile.Location = new System.Drawing.Point(197, 335);
+            this.Btn_ReadTemPareByFile.Location = new System.Drawing.Point(197, 330);
             this.Btn_ReadTemPareByFile.Name = "Btn_ReadTemPareByFile";
             this.Btn_ReadTemPareByFile.Size = new System.Drawing.Size(107, 23);
             this.Btn_ReadTemPareByFile.TabIndex = 36;
@@ -481,7 +478,7 @@
             // 
             // Btn_Send_TemPara
             // 
-            this.Btn_Send_TemPara.Location = new System.Drawing.Point(309, 393);
+            this.Btn_Send_TemPara.Location = new System.Drawing.Point(309, 399);
             this.Btn_Send_TemPara.Name = "Btn_Send_TemPara";
             this.Btn_Send_TemPara.Size = new System.Drawing.Size(104, 31);
             this.Btn_Send_TemPara.TabIndex = 37;
@@ -492,7 +489,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(18, 346);
+            this.label10.Location = new System.Drawing.Point(12, 346);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(35, 12);
             this.label10.TabIndex = 38;
@@ -501,7 +498,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(128, 346);
+            this.label11.Location = new System.Drawing.Point(105, 346);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(35, 12);
             this.label11.TabIndex = 39;
@@ -546,7 +543,7 @@
             // 
             // Btn_TemPara_ON
             // 
-            this.Btn_TemPara_ON.Location = new System.Drawing.Point(319, 335);
+            this.Btn_TemPara_ON.Location = new System.Drawing.Point(319, 330);
             this.Btn_TemPara_ON.Name = "Btn_TemPara_ON";
             this.Btn_TemPara_ON.Size = new System.Drawing.Size(94, 23);
             this.Btn_TemPara_ON.TabIndex = 43;
@@ -556,7 +553,7 @@
             // 
             // Btn_TemPara_OFF
             // 
-            this.Btn_TemPara_OFF.Location = new System.Drawing.Point(319, 364);
+            this.Btn_TemPara_OFF.Location = new System.Drawing.Point(319, 360);
             this.Btn_TemPara_OFF.Name = "Btn_TemPara_OFF";
             this.Btn_TemPara_OFF.Size = new System.Drawing.Size(94, 23);
             this.Btn_TemPara_OFF.TabIndex = 44;
@@ -571,7 +568,7 @@
             // 
             // Btn_SendSFPara
             // 
-            this.Btn_SendSFPara.Location = new System.Drawing.Point(197, 364);
+            this.Btn_SendSFPara.Location = new System.Drawing.Point(197, 360);
             this.Btn_SendSFPara.Name = "Btn_SendSFPara";
             this.Btn_SendSFPara.Size = new System.Drawing.Size(107, 23);
             this.Btn_SendSFPara.TabIndex = 45;
@@ -595,11 +592,31 @@
             this.label15.TabIndex = 47;
             this.label15.Text = "Bias_K23";
             // 
+            // tBox_ModulePara
+            // 
+            this.tBox_ModulePara.Location = new System.Drawing.Point(120, 227);
+            this.tBox_ModulePara.Name = "tBox_ModulePara";
+            this.tBox_ModulePara.Size = new System.Drawing.Size(87, 21);
+            this.tBox_ModulePara.TabIndex = 48;
+            this.tBox_ModulePara.Text = "200";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(118, 212);
+            this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(53, 12);
+            this.label16.TabIndex = 49;
+            this.label16.Text = "调制参数";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(705, 436);
+            this.ClientSize = new System.Drawing.Size(706, 436);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.tBox_ModulePara);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.tBox_BiasK23);
             this.Controls.Add(this.Btn_SendSFPara);
@@ -715,6 +732,8 @@
         private System.Windows.Forms.Button Btn_SendSFPara;
         private System.Windows.Forms.TextBox tBox_BiasK23;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox tBox_ModulePara;
+        private System.Windows.Forms.Label label16;
     }
 }
 

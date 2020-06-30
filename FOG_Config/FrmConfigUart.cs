@@ -17,7 +17,7 @@ namespace FOG_Config
             InitializeComponent();
             this.rBtn_Trigger_woshou.Checked = true;
             this.rBtn_Baud_460.Checked = true;
-            this.rBtn_protocol_rainbow.Checked = true;
+            this.rbtn_protocol_buaa.Checked = true;
             this.rBtn_Upd_woshou.Checked = true;
         }
 
@@ -61,6 +61,10 @@ namespace FOG_Config
             {
                 UartData.UartInfo[4] = (int)UartData.Buadrate.Buad115;
             }
+            if (rBtn_Baud_614.Checked)
+            {
+                UartData.UartInfo[4] = (int)UartData.Buadrate.Buad614;
+            }
             //
             if (rBtn_Upd_woshou.Checked)
             {
@@ -73,6 +77,10 @@ namespace FOG_Config
             if (rBtn_Upd_1000.Checked)
             {
                 UartData.UartInfo[5] = (int)UartData.Upd.Upd_1000Hz;
+            }
+            if (rBtn_Upd_2000.Checked)
+            {
+                UartData.UartInfo[5] = (int)UartData.Upd.Upd_2000Hz;
             }
         }
 

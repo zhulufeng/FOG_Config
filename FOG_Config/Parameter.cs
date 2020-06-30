@@ -56,7 +56,11 @@ namespace FOG_Config
         public static int clkFreq = 0;
         public static int Volt2pi = 0;
         public static int LoopGain = 0;
-        public static int Moduledata = 0;
+        public static int ModuledataNum = 0;
+        public static int ModuledataPara = 0;
+        public static double SF_K1, SF_K2 = 0;
+        public static double Bias_Kt, Bias_K3, Bias_K2, Bias_K1 = 0;
+        public static int TemComSwitch = 0;
         public static string[] strGyroID = {"F50","F60","F70H","F70L","F98","F120"};
 
     }
@@ -83,19 +87,21 @@ namespace FOG_Config
         public enum Buadrate
         {
             Buad460 = 0,
-            Buad115 = 1
+            Buad115 = 1,
+            Buad614 = 0
         };
         public enum Upd
         {
             Upd_woshou = 0,
             Upd_400Hz = 1,
-            Upd_1000Hz = 2
+            Upd_1000Hz = 2,
+            Upd_2000Hz = 3
         };
         public static int[] UartInfo = new int[6];
         public static string[] TriggerString = {"握手","盲发" };
         public static string[] ProtocolString = { "预留信息","北航协议", "润博协议","180908用户协议", };
-        public static string[] BaudString = { "460800", "115200" };
-        public static string[] UpdString = { "握手", "400Hz","1000Hz" };
+        public static string[] BaudString = { "460800", "115200" ,"614400"};
+        public static string[] UpdString = { "握手", "400Hz","1000Hz","2000Hz" };
     }
     class MyVersionInfo
     {
