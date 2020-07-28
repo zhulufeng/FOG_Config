@@ -58,7 +58,7 @@ namespace FOG_Config
         public static int LoopGain = 0;
         public static int ModuledataNum = 0;
         public static int ModuledataPara = 0;
-        public static double SF_K1, SF_K2 = 0;
+        public static double SF_Kn, SF_K1, SF_K2 = 0;
         public static double Bias_Kt, Bias_K3, Bias_K2, Bias_K1 = 0;
         public static int TemComSwitch = 0;
         public static string[] strGyroID = {"F50","F60","F70H","F70L","F98","F120"};
@@ -114,9 +114,9 @@ namespace FOG_Config
     }
     class TemParacls
     {
-        public double[] d_SF_para = new double[2];
+        public double[] d_SF_para = new double[3];
         public double[] d_Bias_para = new double[4];
-        public Int32[] i_SF_para = new Int32[2];
+        public Int32[] i_SF_para = new Int32[3];
         public Int32[] i_Bias_para = new Int32[4];
     }
 }

@@ -437,14 +437,16 @@ namespace FOG_Config
             Bauddata = Convert.ToInt32(tempByteList[4]);
             Upddata = Convert.ToInt32(tempByteList[5]);
             //读取标度因数补偿系数
-            serialData.ReceiveData.CopyTo(36, tempByteList, 0, 10);
-            CustomData.SF_K1 = Convert.ToDouble(Convert.ToInt32(tempByteList[5]) + Convert.ToInt32(tempByteList[4]) * 256 + 
-                Convert.ToInt32(tempByteList[3]) * 256 * 256 + Convert.ToInt32(tempByteList[2]) * 256 * 256 * 256) / 65536.0;
-            CustomData.SF_K2 = Convert.ToDouble(Convert.ToInt32(tempByteList[9]) + Convert.ToInt32(tempByteList[8]) * 256 + 
+            serialData.ReceiveData.CopyTo(36, tempByteList, 0, 14);
+            CustomData.SF_Kn = Convert.ToDouble(Convert.ToInt32(tempByteList[5]) + Convert.ToInt32(tempByteList[4]) * 256 +
+                Convert.ToInt32(tempByteList[3]) * 256 * 256 + Convert.ToInt32(tempByteList[2]) * 256 * 256 * 256) / 1e12;
+            
+            CustomData.SF_K1 = Convert.ToDouble(Convert.ToInt32(tempByteList[9]) + Convert.ToInt32(tempByteList[8]) * 256 + 
                 Convert.ToInt32(tempByteList[7]) * 256 * 256 + Convert.ToInt32(tempByteList[6]) * 256 * 256 * 256) / 65536.0;
-
+            CustomData.SF_K2 = Convert.ToDouble(Convert.ToInt32(tempByteList[13]) + Convert.ToInt32(tempByteList[12]) * 256 +
+                Convert.ToInt32(tempByteList[11]) * 256 * 256 + Convert.ToInt32(tempByteList[10]) * 256 * 256 * 256) / 65536.0;
             //读取零偏补偿系数
-            serialData.ReceiveData.CopyTo(36, tempByteList, 0, 18);
+            serialData.ReceiveData.CopyTo(54, tempByteList, 0, 18);
             CustomData.Bias_Kt = Convert.ToDouble(Convert.ToInt32(tempByteList[5]) + Convert.ToInt32(tempByteList[4]) * 256 +
                 Convert.ToInt32(tempByteList[3]) * 256 * 256 + Convert.ToInt32(tempByteList[2]) * 256 * 256 * 256) / 1024.0;
             CustomData.Bias_K3 = Convert.ToDouble(Convert.ToInt32(tempByteList[9]) + Convert.ToInt32(tempByteList[8]) * 256 +
@@ -454,10 +456,10 @@ namespace FOG_Config
             CustomData.Bias_K1 = Convert.ToDouble(Convert.ToInt32(tempByteList[17]) + Convert.ToInt32(tempByteList[16]) * 256 +
                 Convert.ToInt32(tempByteList[15]) * 256 * 256 + Convert.ToInt32(tempByteList[14]) * 256 * 256 * 256) / 65536.0;
             //读取温补开关参数
-            serialData.ReceiveData.CopyTo(64, tempByteList, 0, 3);
+            serialData.ReceiveData.CopyTo(72, tempByteList, 0, 3);
             CustomData.TemComSwitch =Convert.ToInt32(tempByteList[2]);
             //读取版本信息
-            serialData.ReceiveData.CopyTo(67, tempByteList, 0, 16);
+            serialData.ReceiveData.CopyTo(75, tempByteList, 0, 16);
             MyVersionInfo.FGyroType = Convert.ToInt32(tempByteList[2]);
             for (int i = 0; i < 5; i++)
             {
@@ -465,13 +467,13 @@ namespace FOG_Config
                 MyVersionInfo.HexTime[i] = Convert.ToInt32(tempByteList[10 + i]);
             }
             MyVersionInfo.DotNum = Convert.ToInt32(tempByteList[15]);
-            serialData.ReceiveData.CopyTo(83, tempByteList, 0, 8);
+            serialData.ReceiveData.CopyTo(91, tempByteList, 0, 8);
             //serialData.ReceiveData.CopyTo(46, tempByteList, 0, 8);
             for (int i = 0; i < 8; i++)
             {
                 MyVersionInfo.CoreID += tempByteList[i].ToString("X2");
             }
-            serialData.ReceiveData.CopyTo(91, tempByteList, 0, 4);
+            serialData.ReceiveData.CopyTo(99, tempByteList, 0, 4);
             //serialData.ReceiveData.CopyTo(54, tempByteList, 0, 4);
             for (int i = 0; i < 4; i++)
             {
@@ -483,8 +485,8 @@ namespace FOG_Config
             InfoBox.Text += "环路增益：" + CustomData.LoopGain.ToString() + "\r\n";
             InfoBox.Text += "阶梯波偏置系数：" + CustomData.ModuledataPara.ToString() + "\r\n";
             InfoBox.Text += "调制个数：" + CustomData.ModuledataNum.ToString() + "\r\n";
-            InfoBox.Text += "发送的标度温补参数是：SF_K1 " + CustomData.SF_K1.ToString() + "\tSF_K2: " + CustomData.SF_K2.ToString() + "\r\n";
-            InfoBox.Text += "发送的零偏温补参数是：Bias_K1 " + CustomData.Bias_Kt.ToString() + "\tBias_K23: " + CustomData.Bias_K3.ToString()
+            InfoBox.Text += "发送的标度温补参数是：\r\nSF_Kn:  " + CustomData.SF_Kn.ToString() + "\tSF_K1:  " + CustomData.SF_K1.ToString() + "\tSF_K2: " + CustomData.SF_K2.ToString() + "\r\n";
+            InfoBox.Text += "发送的零偏温补参数是：\r\n0318Bias_K1 " + CustomData.Bias_Kt.ToString() + "\tBias_K23: " + CustomData.Bias_K3.ToString()
                                 + "\tBias_K22: " + CustomData.Bias_K2.ToString() + "\tBias_K21: " + CustomData.Bias_K1.ToString() + "\r\n";
             if (CustomData.TemComSwitch == 1)
             {
@@ -603,15 +605,19 @@ namespace FOG_Config
 
         private void Btn_Debug_Click(object sender, EventArgs e)
         {
-            byte[] Sendbuff = new byte[4];
-            Sendbuff[0] = 0xDE;
+            byte[] Sendbuff = new byte[5];
+            Sendbuff[0] = Convert.ToByte('D');
+            Sendbuff[1] = Convert.ToByte('E');
+            Sendbuff[2] = Convert.ToByte('B');
+            Sendbuff[3] = Convert.ToByte('U');
+            Sendbuff[4] = Convert.ToByte('G');
             if (!serialPort.IsOpen)
             {
                 MessageBox.Show("串口未打开，打开串口后重试！");
                 return;
             }
             serialData.DebugSendFlag = true;
-            serialPort.Write(Sendbuff, 0, 1);
+            serialPort.Write(Sendbuff, 0, 5);
             Debug_Timer.Start();
             InfoBox.Text += "发送调试码，连接陀螺中...";
 
@@ -1097,7 +1103,7 @@ namespace FOG_Config
                     {
                         dataLine = dataLine.Substring(1);
                         dataSplited = dataLine.Split(trnSplitChar, StringSplitOptions.RemoveEmptyEntries);//开始分割
-                        for (int i = 0; i < 2; i++)
+                        for (int i = 0; i < 3; i++)
                         {
                             temPara.d_SF_para[i] = Convert.ToDouble(dataSplited[i]);
                         }
@@ -1114,8 +1120,9 @@ namespace FOG_Config
                     }
                 }
             }
-            tBox_sfk1.Text = temPara.d_SF_para[0].ToString();
-            tBox_sfk2.Text = temPara.d_SF_para[1].ToString();
+            tBox_sfk1.Text = temPara.d_SF_para[1].ToString();
+            tBox_sfk2.Text = temPara.d_SF_para[2].ToString();
+            tBox_sfkn.Text = temPara.d_SF_para[0].ToString();
 
             tBox_BiasK1.Text = temPara.d_Bias_para[0].ToString();
             tBox_BiasK23.Text = temPara.d_Bias_para[1].ToString();
@@ -1151,7 +1158,7 @@ namespace FOG_Config
         }
         private void SendSFtemPara()
         {
-            byte[] Sendbuff = new byte[10];
+            byte[] Sendbuff = new byte[14];
             
             Sendbuff[0] = 0x55;
             Sendbuff[1] = 0x11;
@@ -1163,9 +1170,12 @@ namespace FOG_Config
             Sendbuff[7] = Convert.ToByte((temPara.i_SF_para[1] >> 16) & 0xFF);
             Sendbuff[8] = Convert.ToByte((temPara.i_SF_para[1] >> 8) & 0xFF);
             Sendbuff[9] = Convert.ToByte(temPara.i_SF_para[1] & 0xFF);
-
+            Sendbuff[10] = Convert.ToByte((temPara.i_SF_para[2] >> 24) & 0xFF);
+            Sendbuff[11] = Convert.ToByte((temPara.i_SF_para[2] >> 16) & 0xFF);
+            Sendbuff[12] = Convert.ToByte((temPara.i_SF_para[2] >> 8) & 0xFF);
+            Sendbuff[13] = Convert.ToByte(temPara.i_SF_para[2] & 0xFF);
             serialData.DebugSendSFtemParaFlag = true;
-            serialPort.Write(Sendbuff, 0, 10);
+            serialPort.Write(Sendbuff, 0, 14);
             SF_Timer.Start();
             InfoBox.Text += "发送的标度温补参数是：SF_K1 " + temPara.d_SF_para[0].ToString() + "\tSF_K2: " + temPara.d_SF_para[1].ToString() + "\r\n";
             InfoBox.Text += "对应数据码是：" + "\r\n";
@@ -1357,8 +1367,9 @@ namespace FOG_Config
         {
             try
             {
-                temPara.d_SF_para[0] = Convert.ToDouble(tBox_sfk1.Text);
-                temPara.d_SF_para[1] = Convert.ToDouble(tBox_sfk2.Text);
+                temPara.d_SF_para[0] = Convert.ToDouble(tBox_sfkn.Text);
+                temPara.d_SF_para[1] = Convert.ToDouble(tBox_sfk1.Text);
+                temPara.d_SF_para[2] = Convert.ToDouble(tBox_sfk2.Text);
             }
             catch (Exception)
             {
@@ -1366,13 +1377,21 @@ namespace FOG_Config
                 //throw;
             }
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 3; i++)
             {
-                temPara.i_SF_para[i] = Convert.ToInt32(temPara.d_SF_para[i] * 65536.0);
+                if (i==0)
+                {
+                    temPara.i_SF_para[i] = Convert.ToInt32(temPara.d_SF_para[i] * 1e12);
+                }
+                else
+                {
+                    temPara.i_SF_para[i] = Convert.ToInt32(temPara.d_SF_para[i] * 65536.0);
+                }
+                
             }
             SendSFtemPara();
         }
 
-       
+        
     }
 }
