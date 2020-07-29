@@ -198,7 +198,11 @@ namespace FOG_Config
 
         private void Btn_SendData_Click(object sender, EventArgs e)
         {
-            byte[] BytedataArray = new byte[14];
+            byte[] BytedataArray = new byte[18];
+            for (int i = 0; i < 18; i++)
+            {
+                BytedataArray[i] = 0x00;
+            }
             string Hexdata = FreqDataDic[FreqList[FreqIndex]];
             if (!serialPort.IsOpen)
             {
@@ -210,7 +214,7 @@ namespace FOG_Config
                 BytedataArray[i] = Convert.ToByte(Hexdata.Substring(2 * i, 2), 16);
             }
             serialData.DebugSendFreqFlag = true;
-            serialPort.Write(BytedataArray, 0, 14);
+            serialPort.Write(BytedataArray, 0, 18);
             Debug_Timer.Start();
             InfoBox.Text += "发送的频率是：" + FreqList[FreqIndex].ToString() + "\r\n";
             InfoBox.Text += "对应数据码是：" + "\r\n";
@@ -532,7 +536,11 @@ namespace FOG_Config
         private void Btn_SendPi_Click(object sender, EventArgs e)
         {
             uint PiVolt = Convert.ToUInt16(TBox_2pi.Text);
-            byte[] Sendbuff = new byte[4];
+            byte[] Sendbuff = new byte[18];
+            for (int i = 0; i < 18; i++)
+            {
+                Sendbuff[i] = 0x00;
+            }
             if (!serialPort.IsOpen)
             {
                 MessageBox.Show("串口还没有打开！");
@@ -549,7 +557,7 @@ namespace FOG_Config
             Sendbuff[2] = Convert.ToByte((PiVolt / 256) & 0xFF);
             Sendbuff[3] = Convert.ToByte(PiVolt & 0xFF);
             serialData.DebugSend2piFlag = true;
-            serialPort.Write(Sendbuff, 0, 4);
+            serialPort.Write(Sendbuff, 0, 18);
             Volt_Timer.Start();
             InfoBox.Text += "发送的电压参数是：" + PiVolt.ToString() + "\r\n";
             InfoBox.Text += "对应数据码是：" + "\r\n";
@@ -569,7 +577,11 @@ namespace FOG_Config
         private void Btn_LoopGain_Click(object sender, EventArgs e)
         {
             uint LoopGain = Convert.ToUInt16(TBOX_LoopGain.Text);
-            byte[] Sendbuff = new byte[4];
+            byte[] Sendbuff = new byte[18];
+            for (int i = 0; i < 18; i++)
+            {
+                Sendbuff[i] = 0x00;
+            }
             if (!serialPort.IsOpen)
             {
                 MessageBox.Show("串口还没有打开！");
@@ -586,7 +598,7 @@ namespace FOG_Config
             Sendbuff[2] = Convert.ToByte((LoopGain / 256) & 0xFF);
             Sendbuff[3] = Convert.ToByte(LoopGain & 0xFF);
             serialData.DebugSendLoopGainFlag = true;
-            serialPort.Write(Sendbuff, 0, 4);
+            serialPort.Write(Sendbuff, 0, 18);
             Loop_Timer.Start();
             InfoBox.Text += "发送的环路增益参数是：" + LoopGain.ToString() + "\r\n";
             InfoBox.Text += "对应数据码是：" + "\r\n";
@@ -648,16 +660,19 @@ namespace FOG_Config
         private void Btn_ConfigUart_Click(object sender, EventArgs e)
         {
             FrmConfigUart CfgUartDlg = new FrmConfigUart();
-            byte[] Sendbuff = new byte[6];
+            byte[] Sendbuff = new byte[18];
 
-
+            for (int i = 0; i < 18; i++)
+            {
+                Sendbuff[i] = 0x00;
+            }
             if (CfgUartDlg.ShowDialog() != DialogResult.Cancel)
             {
                 for (int i = 0; i < 6; i++)
                 {
                     Sendbuff[i] = Convert.ToByte(UartData.UartInfo[i] & 0xFF);
                 }
-                serialPort.Write(Sendbuff, 0, 6);
+                serialPort.Write(Sendbuff, 0, 18);
                 InfoBox.Text += "配置通讯协议：" + "\r\n";
                 InfoBox.Text += "触发方式：" + UartData.TriggerString[UartData.UartInfo[2]] + "\r\n";
                 InfoBox.Text += "通讯协议：" + UartData.ProtocolString[UartData.UartInfo[3]] + "\r\n";
@@ -680,12 +695,16 @@ namespace FOG_Config
 
         private void Btn_GetCfgData_Click(object sender, EventArgs e)
         {
-            byte[] Sendbuff = new byte[4];
+            byte[] Sendbuff = new byte[18];
+            for (int i = 0; i < 18; i++)
+            {
+                Sendbuff[i] = 0x00;
+            }
             Sendbuff[0] = 0x55;
             Sendbuff[1] = 0xFB;
             Sendbuff[2] = 0xFF;
             Sendbuff[3] = 0xFF;
-            serialPort.Write(Sendbuff, 0, 4);
+            serialPort.Write(Sendbuff, 0, 18);
 
             InfoBox.Text += "回传配置参数！";
 
@@ -701,8 +720,12 @@ namespace FOG_Config
         private void Btn_Reset_Click(object sender, EventArgs e)
         {
 
-            byte[] BytedataArray = new byte[14];
+            byte[] BytedataArray = new byte[18];
             string Hexdata = FreqDataDic[18269];
+            for (int i = 0; i < 18; i++)
+            {
+                BytedataArray[i] = 0x00;
+            }
             if (!serialPort.IsOpen)
             {
                 MessageBox.Show("串口还没有打开！");
@@ -715,7 +738,7 @@ namespace FOG_Config
                 BytedataArray[i] = Convert.ToByte(Hexdata.Substring(2 * i, 2), 16);
             }
             serialData.DebugSendFreqFlag = true;
-            serialPort.Write(BytedataArray, 0, 14);
+            serialPort.Write(BytedataArray, 0, 18);
             Debug_Timer.Start();
             //让文本框获取焦点 
             this.InfoBox.Focus();
@@ -1006,8 +1029,12 @@ namespace FOG_Config
             UInt32 moduledata;
             UInt32 temp = 0xFFFFFFFF;
             int numOfones;
-            byte[] BytedataArray = new byte[6];
+            byte[] BytedataArray = new byte[18];
             int modulePara;
+            for (int i = 0; i < 18; i++)
+            {
+                BytedataArray[i] = 0x00;
+            }
             modulePara = Convert.ToInt32(tBox_ModulePara.Text, 16);
             numOfones = Convert.ToInt16(numericUpDown_Module.Value);
             //moduledata = temp >> (32 - numOfones);
@@ -1020,7 +1047,7 @@ namespace FOG_Config
             BytedataArray[5] = Convert.ToByte(numOfones & 0xFF);
 
             serialData.DebugSendModuleFlag = true;
-            serialPort.Write(BytedataArray, 0, 6);
+            serialPort.Write(BytedataArray, 0, 18);
             Module_Timer.Start();
             InfoBox.Text += "发送的调制参数是：" + modulePara.ToString() + "\r\n";
             InfoBox.Text += "发送的调制个数是：" + numOfones.ToString() + "\r\n";
@@ -1158,8 +1185,11 @@ namespace FOG_Config
         }
         private void SendSFtemPara()
         {
-            byte[] Sendbuff = new byte[14];
-            
+            byte[] Sendbuff = new byte[18];
+            for (int i = 0; i < 18; i++)
+            {
+                Sendbuff[i] = 0x00;
+            }
             Sendbuff[0] = 0x55;
             Sendbuff[1] = 0x11;
             Sendbuff[2] = Convert.ToByte((temPara.i_SF_para[0] >> 24) & 0xFF);
@@ -1175,7 +1205,7 @@ namespace FOG_Config
             Sendbuff[12] = Convert.ToByte((temPara.i_SF_para[2] >> 8) & 0xFF);
             Sendbuff[13] = Convert.ToByte(temPara.i_SF_para[2] & 0xFF);
             serialData.DebugSendSFtemParaFlag = true;
-            serialPort.Write(Sendbuff, 0, 14);
+            serialPort.Write(Sendbuff, 0, 18);
             SF_Timer.Start();
             InfoBox.Text += "发送的标度温补参数是：SF_K1 " + temPara.d_SF_para[0].ToString() + "\tSF_K2: " + temPara.d_SF_para[1].ToString() + "\r\n";
             InfoBox.Text += "对应数据码是：" + "\r\n";
@@ -1276,15 +1306,18 @@ namespace FOG_Config
 
         private void Btn_TemPara_ON_Click(object sender, EventArgs e)
         {
-            byte[] Sendbuff = new byte[3];
-
+            byte[] Sendbuff = new byte[18];
+            for (int i = 0; i < 18; i++)
+            {
+                Sendbuff[i] = 0x00;
+            }
             Sendbuff[0] = 0x55;
             Sendbuff[1] = 0x33;
             Sendbuff[2] = 0x01;
            
 
             serialData.DebugSendtemParaONFlag = true;
-            serialPort.Write(Sendbuff, 0, 3);
+            serialPort.Write(Sendbuff, 0, 18);
             Switch_Timer.Start();
             InfoBox.Text += "发送打开温补指令\r\n";
             InfoBox.Text += "对应数据码是：" + "\r\n";
@@ -1338,15 +1371,18 @@ namespace FOG_Config
 
         private void Btn_TemPara_OFF_Click(object sender, EventArgs e)
         {
-            byte[] Sendbuff = new byte[3];
-
+            byte[] Sendbuff = new byte[18];
+            for (int i = 0; i < 18; i++)
+            {
+                Sendbuff[i] = 0x00;
+            }
             Sendbuff[0] = 0x55;
             Sendbuff[1] = 0x33;
             Sendbuff[2] = 0x00;
 
 
             serialData.DebugSendtemParaOFFFlag = true;
-            serialPort.Write(Sendbuff, 0, 3);
+            serialPort.Write(Sendbuff, 0, 18);
             Switch_Timer.Start();
             InfoBox.Text += "发送关闭温补指令\r\n";
             InfoBox.Text += "对应数据码是：" + "\r\n";
@@ -1392,6 +1428,5 @@ namespace FOG_Config
             SendSFtemPara();
         }
 
-        
     }
 }
