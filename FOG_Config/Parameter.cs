@@ -88,7 +88,7 @@ namespace FOG_Config
         {
             Buad460 = 0,
             Buad115 = 1,
-            Buad614 = 0
+            Buad614 = 2
         };
         public enum Upd
         {

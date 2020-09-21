@@ -88,6 +88,7 @@
             this.label16 = new System.Windows.Forms.Label();
             this.tBox_sfkn = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
+            this.Send_Debug_Timer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_FreqInex)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Module)).BeginInit();
             this.SuspendLayout();
@@ -628,6 +629,11 @@
             this.label17.TabIndex = 51;
             this.label17.Text = "SF_Kn";
             // 
+            // Send_Debug_Timer
+            // 
+            this.Send_Debug_Timer.Interval = 10;
+            this.Send_Debug_Timer.Tick += new System.EventHandler(this.SendDebugTimerEventProcessor);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -756,6 +762,7 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.TextBox tBox_sfkn;
         private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Timer Send_Debug_Timer;
     }
 }
 

@@ -19,6 +19,7 @@ namespace FOG_Config
         UpdateDataEventHandler DelgeateShow;
         StreamWriter SW_CfgFile = null;
         TemParacls temPara = new TemParacls();
+        int send_debug_index = 0;
         public Form1()
         {
             InitializeComponent();
@@ -628,18 +629,37 @@ namespace FOG_Config
                 MessageBox.Show("串口未打开，打开串口后重试！");
                 return;
             }
-            serialData.DebugSendFlag = true;
-            serialPort.Write(Sendbuff, 0, 5);
-            Debug_Timer.Start();
-            InfoBox.Text += "发送调试码，连接陀螺中...";
+            DialogResult dr;
+            dr = MessageBox.Show("当前陀螺是盲发状态吗？", "确认对话框", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+            InfoBox.Text += "发送调试码，连接陀螺中...\r\n";
+            if (dr == DialogResult.Yes)
+            {
+                serialData.DebugSendFlag = true;
+                serialPort.Write(Sendbuff, 0, 5);
+                if (send_debug_index == 0)
+                {
+                    InfoBox.Text += "对应数据码是：" + "\r\n";
+                }
+                for (int i = 0; i < 5; i++)
+                {
+                    InfoBox.Text += "\'" + Convert.ToChar(Sendbuff[i]) + "\'\t ";
+                }
 
-            InfoBox.Text += "\r\n";
-            //让文本框获取焦点 
-            this.InfoBox.Focus();
-            //设置光标的位置到文本尾 
-            this.InfoBox.Select(this.InfoBox.Text.Length, 0);
-            //滚动到控件光标处 
-            this.InfoBox.ScrollToCaret();
+                //让文本框获取焦点 
+                this.InfoBox.Focus();
+                //设置光标的位置到文本尾 
+                this.InfoBox.Select(this.InfoBox.Text.Length, 0);
+                //滚动到控件光标处 
+                this.InfoBox.ScrollToCaret();
+                Debug_Timer.Start();
+            }
+            else
+            {
+                Send_Debug_Timer.Start();
+                serialData.DebugSendFlag = true;
+                
+            }
+            
         }
 
         private void Btn_GyroNoInput_Click(object sender, EventArgs e)
@@ -1421,12 +1441,46 @@ namespace FOG_Config
                 }
                 else
                 {
-                    temPara.i_SF_para[i] = Convert.ToInt32(temPara.d_SF_para[i] * 65536.0);
+                    temPara.i_SF_para[i] = Convert.ToInt32(temPara.d_SF_para[i] * 1.0e8);
                 }
                 
             }
             SendSFtemPara();
         }
 
+        private void SendDebugTimerEventProcessor(object sender, EventArgs e)
+        {
+            byte[] Sendbuff = new byte[5];
+            Sendbuff[0] = Convert.ToByte('D');
+            Sendbuff[1] = Convert.ToByte('E');
+            Sendbuff[2] = Convert.ToByte('B');
+            Sendbuff[3] = Convert.ToByte('U');
+            Sendbuff[4] = Convert.ToByte('G');
+
+            serialPort.Write(Sendbuff, send_debug_index, 1);
+            if (send_debug_index == 0)
+            {
+                InfoBox.Text += "对应数据码是：" + "\r\n";
+            }
+            
+            InfoBox.Text += "\'" + Convert.ToChar(Sendbuff[send_debug_index]) + "\'\t ";
+
+
+            //让文本框获取焦点 
+            this.InfoBox.Focus();
+            //设置光标的位置到文本尾 
+            this.InfoBox.Select(this.InfoBox.Text.Length, 0);
+            //滚动到控件光标处 
+            this.InfoBox.ScrollToCaret();
+            send_debug_index++;
+            if (send_debug_index > 4)
+            {
+                Send_Debug_Timer.Stop();
+                Debug_Timer.Start();
+                send_debug_index = 0;
+                InfoBox.Text += "\r\n";
+            }
+
+        }
     }
 }
