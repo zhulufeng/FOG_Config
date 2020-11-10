@@ -89,8 +89,14 @@
             this.tBox_sfkn = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.Send_Debug_Timer = new System.Windows.Forms.Timer(this.components);
+            this.numUpdowm_axis = new System.Windows.Forms.NumericUpDown();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.numUpDown_Tem_Axis = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_FreqInex)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Module)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numUpdowm_axis)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numUpDown_Tem_Axis)).BeginInit();
             this.SuspendLayout();
             // 
             // serialPort
@@ -262,7 +268,7 @@
             this.Btn_Debug.Name = "Btn_Debug";
             this.Btn_Debug.Size = new System.Drawing.Size(110, 64);
             this.Btn_Debug.TabIndex = 19;
-            this.Btn_Debug.Text = "连接陀螺，进入调试模式(&D)";
+            this.Btn_Debug.Text = "连接惯组，进入调试模式(&D)";
             this.Btn_Debug.UseVisualStyleBackColor = true;
             this.Btn_Debug.Click += new System.EventHandler(this.Btn_Debug_Click);
             // 
@@ -273,7 +279,7 @@
             this.Btn_GyroNoInput.Name = "Btn_GyroNoInput";
             this.Btn_GyroNoInput.Size = new System.Drawing.Size(102, 23);
             this.Btn_GyroNoInput.TabIndex = 20;
-            this.Btn_GyroNoInput.Text = "陀螺型号设置";
+            this.Btn_GyroNoInput.Text = "惯组型号设置";
             this.Btn_GyroNoInput.UseVisualStyleBackColor = true;
             this.Btn_GyroNoInput.Click += new System.EventHandler(this.Btn_GyroNoInput_Click);
             // 
@@ -411,7 +417,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(14, 213);
+            this.label9.Location = new System.Drawing.Point(10, 213);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(89, 12);
@@ -597,7 +603,7 @@
             // 
             // tBox_ModulePara
             // 
-            this.tBox_ModulePara.Location = new System.Drawing.Point(120, 227);
+            this.tBox_ModulePara.Location = new System.Drawing.Point(134, 228);
             this.tBox_ModulePara.Name = "tBox_ModulePara";
             this.tBox_ModulePara.Size = new System.Drawing.Size(87, 21);
             this.tBox_ModulePara.TabIndex = 48;
@@ -606,7 +612,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(118, 212);
+            this.label16.Location = new System.Drawing.Point(132, 213);
             this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(53, 12);
@@ -615,7 +621,7 @@
             // 
             // tBox_sfkn
             // 
-            this.tBox_sfkn.Location = new System.Drawing.Point(53, 344);
+            this.tBox_sfkn.Location = new System.Drawing.Point(50, 344);
             this.tBox_sfkn.Name = "tBox_sfkn";
             this.tBox_sfkn.Size = new System.Drawing.Size(100, 21);
             this.tBox_sfkn.TabIndex = 50;
@@ -634,11 +640,78 @@
             this.Send_Debug_Timer.Interval = 10;
             this.Send_Debug_Timer.Tick += new System.EventHandler(this.SendDebugTimerEventProcessor);
             // 
+            // numUpdowm_axis
+            // 
+            this.numUpdowm_axis.Location = new System.Drawing.Point(89, 229);
+            this.numUpdowm_axis.Maximum = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.numUpdowm_axis.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numUpdowm_axis.Name = "numUpdowm_axis";
+            this.numUpdowm_axis.Size = new System.Drawing.Size(34, 21);
+            this.numUpdowm_axis.TabIndex = 52;
+            this.numUpdowm_axis.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(99, 213);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(17, 12);
+            this.label18.TabIndex = 53;
+            this.label18.Text = "轴";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(169, 328);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(17, 12);
+            this.label19.TabIndex = 55;
+            this.label19.Text = "轴";
+            // 
+            // numUpDown_Tem_Axis
+            // 
+            this.numUpDown_Tem_Axis.Location = new System.Drawing.Point(159, 344);
+            this.numUpDown_Tem_Axis.Maximum = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.numUpDown_Tem_Axis.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numUpDown_Tem_Axis.Name = "numUpDown_Tem_Axis";
+            this.numUpDown_Tem_Axis.Size = new System.Drawing.Size(34, 21);
+            this.numUpDown_Tem_Axis.TabIndex = 54;
+            this.numUpDown_Tem_Axis.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numUpDown_Tem_Axis.ValueChanged += new System.EventHandler(this.numUpDown_Tem_Axis_ValueChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(706, 460);
+            this.Controls.Add(this.label19);
+            this.Controls.Add(this.numUpDown_Tem_Axis);
+            this.Controls.Add(this.label18);
+            this.Controls.Add(this.numUpdowm_axis);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.tBox_sfkn);
             this.Controls.Add(this.label16);
@@ -693,9 +766,11 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Form1";
-            this.Text = "陀螺调试助手";
+            this.Text = "惯组调试助手";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_FreqInex)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Module)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numUpdowm_axis)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numUpDown_Tem_Axis)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -763,6 +838,10 @@
         private System.Windows.Forms.TextBox tBox_sfkn;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Timer Send_Debug_Timer;
+        private System.Windows.Forms.NumericUpDown numUpdowm_axis;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.NumericUpDown numUpDown_Tem_Axis;
     }
 }
 

@@ -1060,7 +1060,7 @@ namespace FOG_Config
             //moduledata = temp >> (32 - numOfones);
 
             BytedataArray[0] = 0x55;
-            BytedataArray[1] = 0xEE;
+            BytedataArray[1] = BitConverter.GetBytes(Convert.ToInt32(numUpdowm_axis.Value) + 0xE0)[0];
             BytedataArray[2] = Convert.ToByte((modulePara >> 8) & 0xFF);
             BytedataArray[3] = Convert.ToByte((modulePara) & 0xFF);
             BytedataArray[4] = Convert.ToByte((numOfones >> 8) & 0xFF);
@@ -1152,7 +1152,7 @@ namespace FOG_Config
                         dataSplited = dataLine.Split(trnSplitChar, StringSplitOptions.RemoveEmptyEntries);//开始分割
                         for (int i = 0; i < 3; i++)
                         {
-                            temPara.d_SF_para[i] = Convert.ToDouble(dataSplited[i]);
+                            temPara.d_SF_para[Convert.ToInt32(dataSplited[0]) - 1,i] = Convert.ToDouble(dataSplited[i + 1]);
                         }
                     }
 
@@ -1162,19 +1162,19 @@ namespace FOG_Config
                         dataSplited = dataLine.Split(trnSplitChar, StringSplitOptions.RemoveEmptyEntries);//开始分割
                         for (int i = 0; i < 4; i++)
                         {
-                            temPara.d_Bias_para[i] = Convert.ToDouble(dataSplited[i]);
+                            temPara.d_Bias_para[Convert.ToInt32(dataSplited[0]) - 1,i] = Convert.ToDouble(dataSplited[i + 1]);
                         }
                     }
                 }
             }
-            tBox_sfk1.Text = temPara.d_SF_para[1].ToString();
-            tBox_sfk2.Text = temPara.d_SF_para[2].ToString();
-            tBox_sfkn.Text = temPara.d_SF_para[0].ToString();
+            tBox_sfk1.Text = temPara.d_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1,1].ToString();
+            tBox_sfk2.Text = temPara.d_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1,2].ToString();
+            tBox_sfkn.Text = temPara.d_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1,0].ToString();
 
-            tBox_BiasK1.Text = temPara.d_Bias_para[0].ToString();
-            tBox_BiasK23.Text = temPara.d_Bias_para[1].ToString();
-            tBox_BiasK22.Text = temPara.d_Bias_para[2].ToString();
-            tBox_BiasK21.Text = temPara.d_Bias_para[3].ToString();
+            tBox_BiasK1.Text  = temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value)- 1,0].ToString();
+            tBox_BiasK23.Text = temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value)- 1,1].ToString();
+            tBox_BiasK22.Text = temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value)- 1,2].ToString();
+            tBox_BiasK21.Text = temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value)- 1,3].ToString();
             SR.Close();
         }
 
@@ -1183,10 +1183,10 @@ namespace FOG_Config
             try
             {
 
-                temPara.d_Bias_para[0] = Convert.ToDouble(tBox_BiasK1.Text);
-                temPara.d_Bias_para[1] = Convert.ToDouble(tBox_BiasK23.Text);
-                temPara.d_Bias_para[2] = Convert.ToDouble(tBox_BiasK22.Text);
-                temPara.d_Bias_para[3] = Convert.ToDouble(tBox_BiasK21.Text);
+                temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 0] = Convert.ToDouble(tBox_BiasK1.Text);
+                temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 1] = Convert.ToDouble(tBox_BiasK23.Text);
+                temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 2] = Convert.ToDouble(tBox_BiasK22.Text);
+                temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 3] = Convert.ToDouble(tBox_BiasK21.Text);
             }
             catch (Exception)
             {
@@ -1196,12 +1196,12 @@ namespace FOG_Config
 
             for (int i = 0; i < 4; i++)
             {
-                temPara.i_Bias_para[i] = Convert.ToInt32(temPara.d_Bias_para[i] * (i==0? 1024.0:65536.0));
+                temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, i] = Convert.ToInt32(temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, i] * (i==0? 1024.0:65536.0));
                 
             }
             SendBiasPara();
            
-
+             
         }
         private void SendSFtemPara()
         {
@@ -1211,23 +1211,24 @@ namespace FOG_Config
                 Sendbuff[i] = 0x00;
             }
             Sendbuff[0] = 0x55;
-            Sendbuff[1] = 0x11;
-            Sendbuff[2] = Convert.ToByte((temPara.i_SF_para[0] >> 24) & 0xFF);
-            Sendbuff[3] = Convert.ToByte((temPara.i_SF_para[0] >> 16) & 0xFF);
-            Sendbuff[4] = Convert.ToByte((temPara.i_SF_para[0] >> 8) & 0xFF);
-            Sendbuff[5] = Convert.ToByte(temPara.i_SF_para[0] & 0xFF);
-            Sendbuff[6] = Convert.ToByte((temPara.i_SF_para[1] >> 24) & 0xFF);
-            Sendbuff[7] = Convert.ToByte((temPara.i_SF_para[1] >> 16) & 0xFF);
-            Sendbuff[8] = Convert.ToByte((temPara.i_SF_para[1] >> 8) & 0xFF);
-            Sendbuff[9] = Convert.ToByte(temPara.i_SF_para[1] & 0xFF);
-            Sendbuff[10] = Convert.ToByte((temPara.i_SF_para[2] >> 24) & 0xFF);
-            Sendbuff[11] = Convert.ToByte((temPara.i_SF_para[2] >> 16) & 0xFF);
-            Sendbuff[12] = Convert.ToByte((temPara.i_SF_para[2] >> 8) & 0xFF);
-            Sendbuff[13] = Convert.ToByte(temPara.i_SF_para[2] & 0xFF);
+            Sendbuff[1] = BitConverter.GetBytes(Convert.ToInt32(numUpDown_Tem_Axis.Value) + 0x10)[0];
+            Sendbuff[2] = Convert.ToByte( (temPara.i_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1,  0] >> 24) & 0xFF);
+            Sendbuff[3] = Convert.ToByte( (temPara.i_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1,  0] >> 16) & 0xFF);
+            Sendbuff[4] = Convert.ToByte( (temPara.i_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1,  0] >> 8) & 0xFF);
+            Sendbuff[5] = Convert.ToByte(  temPara.i_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1,  0] & 0xFF);
+            Sendbuff[6] = Convert.ToByte( (temPara.i_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1,  1] >> 24) & 0xFF);
+            Sendbuff[7] = Convert.ToByte( (temPara.i_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1,  1] >> 16) & 0xFF);
+            Sendbuff[8] = Convert.ToByte( (temPara.i_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1,  1] >> 8) & 0xFF);
+            Sendbuff[9] = Convert.ToByte(  temPara.i_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1,  1] & 0xFF);
+            Sendbuff[10] = Convert.ToByte((temPara.i_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1,  2] >> 24) & 0xFF);
+            Sendbuff[11] = Convert.ToByte((temPara.i_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1,  2] >> 16) & 0xFF);
+            Sendbuff[12] = Convert.ToByte((temPara.i_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1,  2] >> 8) & 0xFF);
+            Sendbuff[13] = Convert.ToByte( temPara.i_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1,  2] & 0xFF);
             serialData.DebugSendSFtemParaFlag = true;
             serialPort.Write(Sendbuff, 0, 18);
             SF_Timer.Start();
-            InfoBox.Text += "发送的标度温补参数是：SF_K1 " + temPara.d_SF_para[0].ToString() + "\tSF_K2: " + temPara.d_SF_para[1].ToString() + "\r\n";
+            InfoBox.Text += "发送的标度温补参数是：SF_Kn: " + temPara.d_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 1].ToString() +
+                "\tSF_K1 " + temPara.d_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 1].ToString() + "\tSF_K2: " + temPara.d_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 2].ToString() + "\r\n";
             InfoBox.Text += "对应数据码是：" + "\r\n";
             for (int i = 0; i < Sendbuff.Length; i++)
             {
@@ -1266,30 +1267,30 @@ namespace FOG_Config
             byte[] Sendbuff = new byte[18];
 
             Sendbuff[0]  = 0x55;
-            Sendbuff[1]  = 0x22;
-            Sendbuff[2]  = Convert.ToByte((temPara.i_Bias_para[0] >> 24) & 0xFF);
-            Sendbuff[3]  = Convert.ToByte((temPara.i_Bias_para[0] >> 16) & 0xFF);
-            Sendbuff[4]  = Convert.ToByte((temPara.i_Bias_para[0] >> 8) & 0xFF);
-            Sendbuff[5]  = Convert.ToByte(temPara.i_Bias_para[0] & 0xFF);
-            Sendbuff[6]  = Convert.ToByte((temPara.i_Bias_para[1] >> 24) & 0xFF);
-            Sendbuff[7]  = Convert.ToByte((temPara.i_Bias_para[1] >> 16) & 0xFF);
-            Sendbuff[8]  = Convert.ToByte((temPara.i_Bias_para[1] >> 8) & 0xFF);
-            Sendbuff[9]  = Convert.ToByte(temPara.i_Bias_para[1] & 0xFF);
-            Sendbuff[10] = Convert.ToByte((temPara.i_Bias_para[2] >> 24) & 0xFF);
-            Sendbuff[11] = Convert.ToByte((temPara.i_Bias_para[2] >> 16) & 0xFF);
-            Sendbuff[12] = Convert.ToByte((temPara.i_Bias_para[2] >> 8) & 0xFF);
-            Sendbuff[13] = Convert.ToByte(temPara.i_Bias_para[2] & 0xFF);
-            Sendbuff[14] = Convert.ToByte((temPara.i_Bias_para[3] >> 24) & 0xFF);
-            Sendbuff[15] = Convert.ToByte((temPara.i_Bias_para[3] >> 16) & 0xFF);
-            Sendbuff[16] = Convert.ToByte((temPara.i_Bias_para[3] >> 8) & 0xFF);
-            Sendbuff[17] = Convert.ToByte(temPara.i_Bias_para[3] & 0xFF);
+            Sendbuff[1] = BitConverter.GetBytes(Convert.ToInt32(numUpDown_Tem_Axis.Value) + 0x20)[0];
+            Sendbuff[2]  = Convert.ToByte((temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 0]  >> 24) & 0xFF);
+            Sendbuff[3]  = Convert.ToByte((temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 0]  >> 16) & 0xFF);
+            Sendbuff[4]  = Convert.ToByte((temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 0]  >> 8) & 0xFF);
+            Sendbuff[5]  = Convert.ToByte( temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 0]  & 0xFF);
+            Sendbuff[6]  = Convert.ToByte((temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 1]  >> 24) & 0xFF);
+            Sendbuff[7]  = Convert.ToByte((temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 1]  >> 16) & 0xFF);
+            Sendbuff[8]  = Convert.ToByte((temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 1]  >> 8) & 0xFF);
+            Sendbuff[9]  = Convert.ToByte( temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 1]  & 0xFF);
+            Sendbuff[10] = Convert.ToByte((temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 2]  >> 24) & 0xFF);
+            Sendbuff[11] = Convert.ToByte((temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 2]  >> 16) & 0xFF);
+            Sendbuff[12] = Convert.ToByte((temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 2]  >> 8) & 0xFF);
+            Sendbuff[13] = Convert.ToByte( temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 2]  & 0xFF);
+            Sendbuff[14] = Convert.ToByte((temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 3]  >> 24) & 0xFF);
+            Sendbuff[15] = Convert.ToByte((temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 3]  >> 16) & 0xFF);
+            Sendbuff[16] = Convert.ToByte((temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 3]  >> 8) & 0xFF);
+            Sendbuff[17] = Convert.ToByte( temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 3]  & 0xFF);
 
 
             serialData.DebugSendBiastemParaFlag = true;
             serialPort.Write(Sendbuff, 0, 18);
             Bias_Timer.Start();
-            InfoBox.Text += "发送的零偏温补参数是：Bias_K1 " + temPara.d_Bias_para[0].ToString() + "\tBias_K23: " + temPara.d_Bias_para[1].ToString()
-                                + "\tBias_K22: " + temPara.d_Bias_para[2].ToString() + "\tBias_K21: " + temPara.d_Bias_para[3].ToString() + "\r\n";
+            InfoBox.Text += "发送的零偏温补参数是：Bias_K1 " + temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 0].ToString() + "\tBias_K23: " + temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 1].ToString()
+                                + "\tBias_K22: " + temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 2].ToString() + "\tBias_K21: " + temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 3].ToString() + "\r\n";
             InfoBox.Text += "对应数据码是：" + "\r\n";
             for (int i = 0; i < Sendbuff.Length; i++)
             {
@@ -1316,7 +1317,7 @@ namespace FOG_Config
                 InfoBox.Text += "未收零偏参数返回信息。\r\n";
             }
             serialData.DebugSendBiastemParaFlag = false;
-            //让文本框获取焦点 
+            //让文本框获取焦点     
             this.InfoBox.Focus();
             //设置光标的位置到文本尾 
             this.InfoBox.Select(this.InfoBox.Text.Length, 0);
@@ -1423,9 +1424,9 @@ namespace FOG_Config
         {
             try
             {
-                temPara.d_SF_para[0] = Convert.ToDouble(tBox_sfkn.Text);
-                temPara.d_SF_para[1] = Convert.ToDouble(tBox_sfk1.Text);
-                temPara.d_SF_para[2] = Convert.ToDouble(tBox_sfk2.Text);
+                temPara.d_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 0] = Convert.ToDouble(tBox_sfkn.Text);
+                temPara.d_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 1] = Convert.ToDouble(tBox_sfk1.Text);
+                temPara.d_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 2] = Convert.ToDouble(tBox_sfk2.Text);
             }
             catch (Exception)
             {
@@ -1437,11 +1438,11 @@ namespace FOG_Config
             {
                 if (i==0)
                 {
-                    temPara.i_SF_para[i] = Convert.ToInt32(temPara.d_SF_para[i] * 1e12);
+                    temPara.i_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, i] = Convert.ToInt32(temPara.d_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, i] * 1e12);
                 }
                 else
                 {
-                    temPara.i_SF_para[i] = Convert.ToInt32(temPara.d_SF_para[i] * 1.0e8);
+                    temPara.i_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, i] = Convert.ToInt32(temPara.d_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, i] * 1.0e8);
                 }
                 
             }
@@ -1481,6 +1482,18 @@ namespace FOG_Config
                 InfoBox.Text += "\r\n";
             }
 
+        }
+
+        private void numUpDown_Tem_Axis_ValueChanged(object sender, EventArgs e)
+        {
+            tBox_sfk1.Text = temPara.d_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 1].ToString();
+            tBox_sfk2.Text = temPara.d_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 2].ToString();
+            tBox_sfkn.Text = temPara.d_SF_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 0].ToString();
+
+            tBox_BiasK1.Text = temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 0].ToString();
+            tBox_BiasK23.Text = temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 1].ToString();
+            tBox_BiasK22.Text = temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 2].ToString();
+            tBox_BiasK21.Text = temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, 3].ToString();
         }
     }
 }

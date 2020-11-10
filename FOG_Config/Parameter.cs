@@ -114,9 +114,9 @@ namespace FOG_Config
     }
     class TemParacls
     {
-        public double[] d_SF_para = new double[3];
-        public double[] d_Bias_para = new double[4];
-        public Int32[] i_SF_para = new Int32[3];
-        public Int32[] i_Bias_para = new Int32[4];
+        public double[,] d_SF_para   = new double[3,3];
+        public double[,] d_Bias_para = new double[3,4];
+        public Int32 [,] i_SF_para   = new  Int32[3,3];
+        public Int32 [,] i_Bias_para = new  Int32[3,4];
     }
 }
