@@ -1196,7 +1196,7 @@ namespace FOG_Config
 
             for (int i = 0; i < 4; i++)
             {
-                temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, i] = Convert.ToInt32(temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, i] * (i==0? 1024.0:65536.0));
+                temPara.i_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, i] = Convert.ToInt32(temPara.d_Bias_para[Convert.ToInt32(numUpDown_Tem_Axis.Value) - 1, i] * (i==0?1e6:1.0e15*Math.Pow(10,1-i)));
                 
             }
             SendBiasPara();
